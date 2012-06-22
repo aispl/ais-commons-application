@@ -12,8 +12,8 @@
     <artifactId>ais-commons-application</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name></name>
-    <description></description>
+    <name>AIS.PL Commons - Application</name>
+    <description>This library provides set of reusable components useful for building Web Applications.</description>
     <url>https://github.com/aispl/ais-commons-application</url>
 
     <licenses>
