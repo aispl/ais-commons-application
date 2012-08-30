@@ -27,6 +27,26 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
         return new DelegatingPropertyEditor(formatter);
     }
 
+    /**
+     * Returns {@link PropertyEditorFactory} creating {@link DelegatingPropertyEditor}
+     * instances using given {@code formatter}.
+     *
+     * @param formatter the formatter which will be used by property editors created by the factory
+     * @return {@link PropertyEditorFactory} creating {@link DelegatingPropertyEditor}
+     *         instances using given {@code formatter}
+     * @since 1.0.2
+     */
+    public static PropertyEditorFactory factoryFor(final Formatter<?> formatter) {
+        return new PropertyEditorFactory() {
+
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            @Override
+            public PropertyEditor newPropertyEditor() {
+                return new DelegatingPropertyEditor(formatter);
+            }
+        };
+    }
+
     private final transient Formatter<T> formatter;
 
     /**
