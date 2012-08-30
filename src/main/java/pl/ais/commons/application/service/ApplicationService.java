@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Indicates that an annotated class is an Application Service.
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Target({ElementType.TYPE})
 @Service
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-@Transactional(readOnly = true)
 public @interface ApplicationService {
 
     /**
