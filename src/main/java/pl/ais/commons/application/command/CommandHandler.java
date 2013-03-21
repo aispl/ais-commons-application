@@ -8,7 +8,7 @@ package pl.ais.commons.application.command;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public interface CommandHandler<C extends Command, R> {
+public interface CommandHandler<C, R> {
 
     /**
      * Handles the command.
