@@ -5,8 +5,10 @@
   You have to add @Transactional yourself, where it will be really needed - not all application services require
   to be transactional.
 
-- Command is deprecated starting from 1.0.2; CommandHandler will handle commands of any type, and not require
+- Command i-face has been removed; CommandHandler will handle commands of any type, and not require
   Command i-face to be implemented by them
+
+- ApplicationService annotation has been moved to stereotype package, original service package has been removed
 
 - Dependencies update: Spring Framework version 3.2.2 will be used; org.springframework:spring-tx dependency
   not needed now
