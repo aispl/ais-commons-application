@@ -1,4 +1,4 @@
-package pl.ais.commons.application.service;
+package pl.ais.commons.application.stereotype;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
