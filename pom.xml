@@ -9,7 +9,7 @@
 
     <groupId>pl.ais.commons</groupId>
     <artifactId>ais-commons-application</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>AIS.PL Commons - Application</name>
     <description>This library provides set of reusable components useful for building Web Applications.</description>
@@ -40,7 +40,7 @@
     </developers>
 
     <properties>
-        <spring.version>3.1.1.RELEASE</spring.version>
+        <spring.version>3.2.2.RELEASE</spring.version>
     </properties>
 
     <build>
@@ -60,11 +60,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>

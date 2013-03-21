@@ -7,3 +7,6 @@
 
 - Command is deprecated starting from 1.0.2; CommandHandler will handle commands of any type, and not require
   Command i-face to be implemented by them
+
+- Dependencies update: Spring Framework version 3.2.2 will be used; org.springframework:spring-tx dependency
+  not needed now
