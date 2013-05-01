@@ -39,9 +39,9 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
         return holder.getFeature(feature);
     }
 
-    private transient final Map<Class<?>, Object> featureHandlers = new HashMap<Class<?>, Object>();
+    private transient final Map<Class<?>, Object> featureHandlers = new HashMap<>();
 
-    private transient final Set<Class<?>> features = new HashSet<Class<?>>();
+    private transient final Set<Class<?>> features = new HashSet<>();
 
     /**
      * @see pl.ais.commons.application.feature.FeaturesHolder#addFeature(java.lang.Class, java.lang.Object)

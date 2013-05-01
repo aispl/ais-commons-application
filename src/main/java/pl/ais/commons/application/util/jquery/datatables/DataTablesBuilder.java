@@ -47,7 +47,8 @@ public class DataTablesBuilder<E extends Serializable> {
      *            orderings which are available for the search results
      * @return the builder itself
      */
-    public <R extends Serializable> DataTablesBuilder<E> andOrderings(
+    @SafeVarargs
+    public final <R extends Serializable> DataTablesBuilder<E> andOrderings(
         final HttpServletRequest request, final int sortingColsNo, final R[]... orderings) {
         for (int i = 0; i < sortingColsNo; i++) {
             int index = 2 * Integer.parseInt(request.getParameter(JQueryDataTables.SORT_COL_PREFIX + i));
@@ -67,7 +68,7 @@ public class DataTablesBuilder<E extends Serializable> {
      */
     @SuppressWarnings("boxing")
     public Map<String, Object> buildInResponseTo(final HttpServletRequest request) {
-        final Map<String, Object> result = new HashMap<String, Object>();
+        final Map<String, Object> result = new HashMap<>();
         result.put(JQueryDataTables.DATA, converter.convertToData(request, results));
         result.put(JQueryDataTables.TOTAL_NO, results.getTotalRecords());
         result.put(JQueryDataTables.FILTERED_NO, results.getTotalRecords());
