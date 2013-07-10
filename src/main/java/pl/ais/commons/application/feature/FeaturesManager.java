@@ -1,6 +1,7 @@
 package pl.ais.commons.application.feature;
 
-import java.io.Serializable;
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,16 +10,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 /**
  * Features manager.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.MissingSerialVersionUID"})
-public class FeaturesManager implements FeaturesHolder, Serializable {
+public class FeaturesManager implements FeaturesHolder {
 
     /**
      * Retrieves the feature.
@@ -44,7 +42,7 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
     private transient final Set<Class<?>> features = new HashSet<>();
 
     /**
-     * @see pl.ais.commons.application.feature.FeaturesHolder#addFeature(java.lang.Class, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void addFeature(final Class<?> feature, final Object handler) {
@@ -53,7 +51,7 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
     }
 
     /**
-     * @see pl.ais.commons.application.feature.FeaturesHolder#addVirtualFeature(java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public void addVirtualFeature(final Class<?> feature) {
@@ -61,7 +59,7 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
     }
 
     /**
-     * @see pl.ais.commons.application.feature.FeaturesHolder#getFeature(java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public <T> T getFeature(final Class<T> feature) throws UnsupportedFeatureException, VirtualFeatureException {
@@ -76,7 +74,7 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
     }
 
     /**
-     * @see pl.ais.commons.application.feature.FeaturesHolder#hasFeature(java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public boolean hasFeature(final Class<?> feature) {
@@ -84,7 +82,7 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
     }
 
     /**
-     * @see pl.ais.commons.application.feature.FeaturesHolder#removeFeature(java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public void removeFeature(final Class<?> feature) {
@@ -97,11 +95,7 @@ public class FeaturesManager implements FeaturesHolder, Serializable {
      */
     @Override
     public String toString() {
-        final ToStringBuilder builder = new ToStringBuilder(this);
-        for (Class<?> feature : features) {
-            builder.append(feature);
-        }
-        return builder.build();
+        return toStringHelper(this).add("features", features).toString();
     }
 
 }
