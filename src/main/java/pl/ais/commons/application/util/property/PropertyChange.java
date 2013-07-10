@@ -1,8 +1,7 @@
 package pl.ais.commons.application.util.property;
 
 import java.io.Serializable;
-
-import org.apache.commons.lang3.ObjectUtils;
+import java.util.Objects;
 
 /**
  * Property change.
@@ -59,7 +58,7 @@ public class PropertyChange<T> implements Serializable {
      * @return {@code true} if initial value equals final value, {@code false} otherwise
      */
     public boolean isIllusory() {
-        return ObjectUtils.equals(initialValue, finalValue);
+        return Objects.equals(initialValue, finalValue);
     }
 
     /**
