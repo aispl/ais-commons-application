@@ -3,6 +3,8 @@ package pl.ais.commons.application.util.format;
 import java.text.ParseException;
 import java.util.Locale;
 
+import javax.annotation.concurrent.Immutable;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -14,21 +16,22 @@ import org.springframework.format.Formatter;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class LocalDateFormatter implements Formatter<LocalDate> {
-
-    /**
-     * Singleton instance.
-     */
-    public static final LocalDateFormatter INSTANCE = new LocalDateFormatter();
+@Immutable
+public final class LocalDateFormatter implements Formatter<LocalDate> {
 
     private static final String DEFAULT_FORMAT = "MM/dd/yyyy";
+
+    /**
+     * Singleton instance, using default 'MM/dd/yyyy' format.
+     */
+    public static final LocalDateFormatter INSTANCE = new LocalDateFormatter();
 
     private transient final DateTimeFormatter dateFormatter;
 
     /**
      * Constructs new instance using default date format (MM/dd/yyyy).
      */
-    public LocalDateFormatter() {
+    private LocalDateFormatter() {
         this(DEFAULT_FORMAT);
     }
 
