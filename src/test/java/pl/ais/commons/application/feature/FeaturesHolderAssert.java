@@ -6,7 +6,7 @@ package pl.ais.commons.application.feature;
  * @author Warlock, AIS.PL
  * @since 1.0.2
  */
-public class FeaturesHolderAssert {
+public final class FeaturesHolderAssert {
 
     /**
      * Provides {@linkplain FeaturesHolderAssert} instance for given features holder.
@@ -18,7 +18,7 @@ public class FeaturesHolderAssert {
         return new FeaturesHolderAssert(featuresHolder);
     }
 
-    private final FeaturesHolder featuresHolder;
+    private transient final FeaturesHolder featuresHolder;
 
     /**
      * Constructs new instance.
