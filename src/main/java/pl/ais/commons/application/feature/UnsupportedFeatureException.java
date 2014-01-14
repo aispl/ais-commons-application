@@ -1,31 +1,29 @@
 package pl.ais.commons.application.feature;
 
+import javax.annotation.Nonnull;
+
 /**
  * Thrown to indicate that the requested feature is unsupported.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.MissingSerialVersionUID"})
-public class UnsupportedFeatureException extends RuntimeException {
+public final class UnsupportedFeatureException extends FeatureException {
 
-    private final Class<?> feature;
+    /**
+     * Identifies the original class version for which it is capable of writing streams and from which it can read.
+     *
+     * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
+     */
+    private static final long serialVersionUID = 3530629842755058818L;
 
     /**
      * Constructs new instance.
      *
      * @param feature unsupported feature
      */
-    public UnsupportedFeatureException(final Class<?> feature) {
-        super();
-        this.feature = feature;
-    }
-
-    /**
-     * @return the feature
-     */
-    public Class<?> getFeature() {
-        return feature;
+    public UnsupportedFeatureException(@Nonnull final Class<?> feature) {
+        super(feature);
     }
 
 }
