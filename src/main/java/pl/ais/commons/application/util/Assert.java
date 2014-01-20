@@ -11,10 +11,10 @@ public final class Assert {
     /**
      * Assert that an object is not {@code null}.
      *
-     * @param object the object to check
      * @param message the message used for creating exception if the assertion fails
+     * @param object the object to check
      */
-    public static void notNull(final Object object, final String message) {
+    public static void notNull(final String message, final Object object) {
         if (null == object) {
             throw new IllegalArgumentException(message);
         }
