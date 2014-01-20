@@ -5,6 +5,7 @@ import static com.google.common.base.Objects.toStringHelper;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 
 import pl.ais.commons.application.util.Assert;
 
@@ -17,6 +18,7 @@ import com.google.common.collect.ImmutableMap;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
+@ThreadSafe
 public class DefaultFeaturesHolder implements FeaturesHolder {
 
     private transient Map<Class<?>, Optional<?>> featuresMap;
