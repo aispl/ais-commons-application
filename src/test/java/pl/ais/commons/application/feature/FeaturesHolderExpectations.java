@@ -40,7 +40,7 @@ public class FeaturesHolderExpectations {
     public void shouldRaiseExceptionOnUnsupportedFeatureAccess() {
 
         // Given FeaturesHolder with some set of features, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap());
 
         // ... when we access feature outside the set, ...
@@ -57,7 +57,7 @@ public class FeaturesHolderExpectations {
     public void shouldRaiseExceptionOnVirtualFeatureAccess() {
 
         // Given FeaturesHolder with some set of features, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap());
 
         // ... when we access virtual feature, ...
@@ -74,7 +74,7 @@ public class FeaturesHolderExpectations {
     public void shouldReportCorrectlyExistingFeature() {
 
         // Given FeaturesHolder with some set of features, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap());
 
         // ... when we ask about existence of feature from the set, ...
@@ -92,7 +92,7 @@ public class FeaturesHolderExpectations {
     public void shouldReportCorrectlyNonExistingFeature() {
 
         // Given FeaturesHolder with some set of features, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap());
 
         // ... when we ask about existence of feature outside the set, ...
@@ -110,7 +110,7 @@ public class FeaturesHolderExpectations {
     public void shouldReturnExistingFeature() {
 
         // Given FeaturesHolder with some set of features, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap());
 
         // ... when we request feature from the set, which is not virtual, ...

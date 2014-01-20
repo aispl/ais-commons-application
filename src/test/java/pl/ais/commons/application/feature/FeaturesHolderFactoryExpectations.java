@@ -1,8 +1,8 @@
 package pl.ais.commons.application.feature;
 
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.util.Map;
 
@@ -57,7 +57,7 @@ public class FeaturesHolderFactoryExpectations {
     public void defaultFactoryShouldCreateDefaultFeaturesHolderInstances() {
 
         // Given default FeaturesHolderFactory, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
 
         // ... when we create FeaturesHolder, ...
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(emptyFeaturesMap());
@@ -101,12 +101,12 @@ public class FeaturesHolderFactoryExpectations {
     /**
      * Verifies if {@link FeaturesHolderFactory} is using given features for created instances.
      */
-    @SuppressWarnings({"boxing", "static-method"})
+    @SuppressWarnings("static-method")
     @Test
     public void factoryShouldUseGivenFeaturesForCreatingInstances() {
 
         // Given FeaturesHolderFactory instance, ...
-        final FeaturesHolderFactory factory = FeaturesHolderFactory.DEFAULT_FACTORY;
+        final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
 
         // ... when we create FeaturesHolder with some feature, ...
         final Map<Class<?>, Optional<?>> featuresMap = ImmutableMap.<Class<?>, Optional<?>> builder()
@@ -114,8 +114,8 @@ public class FeaturesHolderFactoryExpectations {
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap);
 
         // ... then factory should use given features for created instances
-        assertThat("FeaturesHolder factory should use given features map for created instances.",
-            featuresHolder.hasFeature(FeatureA.class), is(true));
+        assertTrue("FeaturesHolder factory should use given features map for created instances.",
+            featuresHolder.hasFeature(FeatureA.class));
     }
 
 }
