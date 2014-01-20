@@ -23,19 +23,29 @@ import com.google.common.base.Optional;
  * @since 1.1.1
  */
 @Immutable
-public class FeaturesHolderFactory {
+public final class FeaturesHolderFactory {
 
     /**
      * Shared instance of default {@link FeaturesHolder} factory.
      */
-    public static final FeaturesHolderFactory DEFAULT_FACTORY = new FeaturesHolderFactory();
+    private static final FeaturesHolderFactory DEFAULT_FACTORY = new FeaturesHolderFactory();
+
+    /**
+     * Returns shared instance of default {@link FeaturesHolder} factory.
+     *
+     * @return shared instance of default {@link FeaturesHolder} factory.
+     */
+    @Nonnull
+    public static FeaturesHolderFactory getInstance() {
+        return DEFAULT_FACTORY;
+    }
 
     private transient Constructor<? extends FeaturesHolder> constructor;
 
     /**
      * Constructs new factory creating {@link DefaultFeaturesHolder} instances.
      */
-    public FeaturesHolderFactory() {
+    private FeaturesHolderFactory() {
         this(DefaultFeaturesHolder.class);
     }
 
