@@ -4,8 +4,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import pl.ais.commons.application.util.Assert;
 
 import com.google.common.base.Optional;
 
@@ -43,7 +45,13 @@ public class FeaturesHolderFactory {
      * @param targetClass desired {@link FeaturesHolder} implementation
      * @throws IllegalArgumentException if desired {@link FeaturesHolder} implementation cannot be used by this factory
      */
-    public FeaturesHolderFactory(final Class<? extends FeaturesHolder> targetClass) throws IllegalArgumentException {
+    public FeaturesHolderFactory(@Nonnull final Class<? extends FeaturesHolder> targetClass)
+        throws IllegalArgumentException {
+
+        // Verify constructor requirements, ...
+        Assert.notNull("Please, provide the target class.", targetClass);
+
+        // ... and do the work.
         try {
             this.constructor = targetClass.getConstructor(Map.class);
         } catch (NoSuchMethodException exception) {
@@ -58,7 +66,13 @@ public class FeaturesHolderFactory {
      * @param featuresMap features which will be owned by created {@link FeaturesHolder}
      * @return newly created {@link FeaturesHolder} instance
      */
-    public FeaturesHolder createFeaturesHolder(final Map<Class<?>, Optional<?>> featuresMap) {
+    @Nonnull
+    public FeaturesHolder createFeaturesHolder(@Nonnull final Map<Class<?>, Optional<?>> featuresMap) {
+
+        // Verify method requirements, ...
+        Assert.notNull("Please, provide desird features map.", featuresMap);
+
+        // ... and do the work.
         try {
             return constructor.newInstance(featuresMap);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
