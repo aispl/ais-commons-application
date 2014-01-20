@@ -20,7 +20,7 @@ public class FeatureException extends RuntimeException {
      *
      * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
      */
-    private static final long serialVersionUID = -2275613423936588859L;
+    private static final long serialVersionUID = -2330732137848728889L;
 
     private final Class<?> feature;
 
@@ -33,7 +33,7 @@ public class FeatureException extends RuntimeException {
         super();
 
         // Verify constructor requirements first, ...
-        Assert.notNull(feature, "Please, provide the feature.");
+        Assert.notNull("Please, provide the feature.", feature);
 
         // ... and initialize this instance fields.
         this.feature = feature;
@@ -55,8 +55,8 @@ public class FeatureException extends RuntimeException {
         validateState();
     }
 
-    private void validateState() {
-        Assert.notNull(feature, "Please, provide the feature.");
+    protected void validateState() {
+        Assert.notNull("Please, provide the feature.", feature);
     }
 
 }
