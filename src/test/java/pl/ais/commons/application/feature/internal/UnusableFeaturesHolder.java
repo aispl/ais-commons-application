@@ -1,6 +1,7 @@
 package pl.ais.commons.application.feature.internal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.UnsupportedFeatureException;
@@ -12,7 +13,8 @@ import pl.ais.commons.application.feature.VirtualFeatureException;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
-public class UnusableFeaturesHolder implements FeaturesHolder {
+@Immutable
+public final class UnusableFeaturesHolder implements FeaturesHolder {
 
     /**
      * {@inheritDoc}

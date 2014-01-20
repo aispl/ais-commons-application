@@ -3,6 +3,7 @@ package pl.ais.commons.application.feature.internal;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.UnsupportedFeatureException;
@@ -16,7 +17,8 @@ import com.google.common.base.Optional;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
-public class BrokenFeaturesHolder implements FeaturesHolder {
+@Immutable
+public final class BrokenFeaturesHolder implements FeaturesHolder {
 
     /**
      * @param featuresMap mapping of the features owned by the holder
