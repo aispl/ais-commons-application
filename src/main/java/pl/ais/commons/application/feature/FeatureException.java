@@ -2,6 +2,7 @@ package pl.ais.commons.application.feature;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 
 import javax.annotation.Nonnull;
 
@@ -21,7 +22,7 @@ public class FeatureException extends RuntimeException {
      *
      * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
      */
-    private static final long serialVersionUID = -2330732137848728889L;
+    private static final long serialVersionUID = -2275613423936588859L;
 
     private final Class<?> feature;
 
@@ -53,11 +54,9 @@ public class FeatureException extends RuntimeException {
         objectStream.defaultReadObject();
 
         // ... and validate its state.
-        validateState();
-    }
-
-    protected void validateState() {
-        Assert.notNull("Please, provide the feature.", feature);
+        if (null == feature) {
+            throw new StreamCorruptedException("Feature is required.");
+        }
     }
 
 }
