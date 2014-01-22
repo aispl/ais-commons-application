@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import pl.ais.commons.application.feature.FeaturesHolder;
+import pl.ais.commons.application.feature.internal.OperationalFeaturesHolder;
 
 /**
  * Example controller.
@@ -14,7 +15,6 @@ import pl.ais.commons.application.feature.FeaturesHolder;
  * @since 1.1.1
  */
 @Controller
-@RequestMapping("/example.html")
 public class ExampleController {
 
     /**
@@ -23,14 +23,26 @@ public class ExampleController {
     public static final String FEATURES_HOLDER = "featuresHolder";
 
     /**
-     * Responds to {@link RequestMethod#GET} requests.
+     * Example of method using default {@link FeaturesHolder} implementation.
      *
      * @param model the Model
      * @param featuresHolder features holder
      */
     @SuppressWarnings("static-method")
-    @RequestMapping(method = RequestMethod.GET)
-    public void doHandle(final Model model, final FeaturesHolder featuresHolder) {
+    @RequestMapping(method = RequestMethod.GET, value = "/default.html")
+    public void doHandleDefault(final Model model, final FeaturesHolder featuresHolder) {
+        model.addAttribute(FEATURES_HOLDER, featuresHolder);
+    }
+
+    /**
+     * Example of method using specialized {@link FeaturesHolder} type.
+     *
+     * @param model the Model
+     * @param featuresHolder features holder
+     */
+    @SuppressWarnings("static-method")
+    @RequestMapping(method = RequestMethod.GET, value = "/operational.html")
+    public void doHandleOperational(final Model model, final OperationalFeaturesHolder featuresHolder) {
         model.addAttribute(FEATURES_HOLDER, featuresHolder);
     }
 
