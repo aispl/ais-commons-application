@@ -92,4 +92,11 @@ public final class FeaturesHolderFactory {
         }
     }
 
+    /**
+     * @return the type of products returned by this factory
+     */
+    public Class<? extends FeaturesHolder> getProductClass() {
+        return constructor.getDeclaringClass();
+    }
+
 }
