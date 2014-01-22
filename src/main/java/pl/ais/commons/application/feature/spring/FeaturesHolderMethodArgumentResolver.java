@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -34,6 +36,14 @@ public final class FeaturesHolderMethodArgumentResolver implements ApplicationCo
 
     private transient Map<GrantedAuthority, Set<Class<?>>> featuresMap;
 
+    /**
+     * Constructs new instance.
+     */
+    public FeaturesHolderMethodArgumentResolver() {
+        super();
+        this.factory = FeaturesHolderFactory.getInstance();
+    }
+
     private void addFeaturesForAuthority(final GrantedAuthority authority, final FeaturesHolderBuilder builder) {
         final Collection<Class<?>> features = featuresMap.get(authority);
         if (null != features) {
@@ -44,23 +54,17 @@ public final class FeaturesHolderMethodArgumentResolver implements ApplicationCo
     }
 
     /**
-     * @return the factory
-     */
-    private FeaturesHolderFactory getFactory() {
-        return null == factory ? FeaturesHolderFactory.getInstance() : factory;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
     public Object resolveArgument(
         final MethodParameter parameter, final ModelAndViewContainer mavContainer, final NativeWebRequest webRequest,
         final WebDataBinderFactory binderFactory) throws Exception {
         final Principal principal = webRequest.getUserPrincipal();
         FeaturesHolder result = null;
         if (principal instanceof Authentication) {
-            final FeaturesHolderBuilder builder = new FeaturesHolderBuilder(getFactory(), context);
+            final FeaturesHolderBuilder builder = new FeaturesHolderBuilder(factory, context);
             for (final GrantedAuthority authority : ((Authentication) principal).getAuthorities()) {
                 addFeaturesForAuthority(authority, builder);
             }
@@ -73,21 +77,42 @@ public final class FeaturesHolderMethodArgumentResolver implements ApplicationCo
      * {@inheritDoc}
      */
     @Override
-    public void setApplicationContext(final ApplicationContext context) throws BeansException {
+    public void setApplicationContext(@Nonnull final ApplicationContext context) throws BeansException {
+
+        // Verify method requirements, ...
+        if (null == context) {
+            throw new IllegalArgumentException("Application context is required.");
+        }
+
+        // ... and mutate the field.
         this.context = context;
     }
 
     /**
      * @param factory the factory to set
      */
-    public void setFeaturesHolderFactory(final FeaturesHolderFactory factory) {
+    public void setFeaturesHolderFactory(@Nonnull final FeaturesHolderFactory factory) {
+
+        // Verify method requirements, ...
+        if (null == context) {
+            throw new IllegalArgumentException("Factory is required.");
+        }
+
+        // ... and mutate the field.
         this.factory = factory;
     }
 
     /**
      * @param featuresMap mapping between granted authority and set of features
      */
-    public void setFeaturesMap(final Map<GrantedAuthority, Set<Class<?>>> featuresMap) {
+    public void setFeaturesMap(@Nonnull final Map<GrantedAuthority, Set<Class<?>>> featuresMap) {
+
+        // Verify method requirements, ...
+        if (null == featuresMap) {
+            throw new IllegalArgumentException("Features map is required.");
+        }
+
+        // ... and mutate the field.
         this.featuresMap = featuresMap;
     }
 

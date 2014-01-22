@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import pl.ais.commons.application.util.Assert;
-
 import com.google.common.base.Optional;
 
 /**
@@ -52,20 +50,22 @@ public final class FeaturesHolderFactory {
     /**
      * Constructs new factory creating instances of desired {@link FeaturesHolder} implementation.
      *
-     * @param targetClass desired {@link FeaturesHolder} implementation
+     * @param productClass desired type of factory products
      * @throws IllegalArgumentException if desired {@link FeaturesHolder} implementation cannot be used by this factory
      */
-    public FeaturesHolderFactory(@Nonnull final Class<? extends FeaturesHolder> targetClass)
+    public FeaturesHolderFactory(@Nonnull final Class<? extends FeaturesHolder> productClass)
         throws IllegalArgumentException {
 
         // Verify constructor requirements, ...
-        Assert.notNull("Please, provide the target class.", targetClass);
+        if (null == productClass) {
+            throw new IllegalArgumentException("Product class is required.");
+        }
 
         // ... and do the work.
         try {
-            this.constructor = targetClass.getConstructor(Map.class);
+            this.constructor = productClass.getConstructor(Map.class);
         } catch (NoSuchMethodException exception) {
-            throw new IllegalArgumentException("Desired type (" + targetClass
+            throw new IllegalArgumentException("Desired type (" + productClass
                 + ") doesn't have 1-arg constructor with Map parameter.", exception);
         }
     }
@@ -80,7 +80,9 @@ public final class FeaturesHolderFactory {
     public FeaturesHolder createFeaturesHolder(@Nonnull final Map<Class<?>, Optional<?>> featuresMap) {
 
         // Verify method requirements, ...
-        Assert.notNull("Please, provide desird features map.", featuresMap);
+        if (null == featuresMap) {
+            throw new IllegalArgumentException("Features map is required.");
+        }
 
         // ... and do the work.
         try {

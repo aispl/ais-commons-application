@@ -13,6 +13,7 @@ import pl.ais.commons.application.util.Assert;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class FeatureException extends RuntimeException {
 
     /**

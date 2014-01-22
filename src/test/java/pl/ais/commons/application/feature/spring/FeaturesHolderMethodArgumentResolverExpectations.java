@@ -1,7 +1,6 @@
 package pl.ais.commons.application.feature.spring;
 
 import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -9,7 +8,6 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.Set;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
@@ -20,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import pl.ais.commons.application.feature.DefaultFeaturesHolder;
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.FeaturesHolderFactory;
 import pl.ais.commons.application.feature.internal.DefaultFeatureA;
@@ -39,6 +36,7 @@ import com.google.common.collect.ImmutableSet;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class FeaturesHolderMethodArgumentResolverExpectations {
 
     /**
@@ -106,6 +104,7 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
      *
      * @throws Exception in case of any problems
      */
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
     @Test
     public void shouldAllowResolvingParametersOfCustomFeaturesHolderType() throws Exception {
         try (final StaticApplicationContext context = new StaticApplicationContext()) {
@@ -113,28 +112,26 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
             // Given custom FeaturesHolder type factory, ...
             final FeaturesHolderFactory factory = new FeaturesHolderFactory(OperationalFeaturesHolder.class);
 
-            // ... and application with support for resolving parameters of this custom FeaturesHolder type, ...
+            // ... and application with support for resolving parameters of this custom FeaturesHolder type,
+            // along with default FeaturesHolder type ...
             initializeApplicationContext(context);
 
             final MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ExampleController())
-                .setCustomArgumentResolvers(methodArgumentResolver(factory, context)).build();
+                .setCustomArgumentResolvers(methodArgumentResolver(context), methodArgumentResolver(factory, context))
+                .build();
 
             // ... and authorized user, having ordinary user authority.
             final Principal principal = createPrincipal(ordinaryUser);
 
-            // When we perform the request, handled by controller's method declaring FeaturesHolder as one
+            // When we perform the request, handled by controller's method declaring specialized FeaturesHolder as one
             // of the parameters.
-            final ResultActions resultActions = mockMvc.perform(get("/example.html").principal(principal));
+            final ResultActions resultActions = mockMvc.perform(get("/operational.html").principal(principal));
 
             // Then the request should succeed, ...
             resultActions.andExpect(status().isOk());
 
             // ... with FeaturesHolder created for us, ...
             final FeaturesHolder featuresHolder = extractFeaturesHolder(resultActions);
-
-            // ... having appropriate type, ...
-            assertThat("Features Holder should be instance of custom type.", featuresHolder,
-                CoreMatchers.instanceOf(OperationalFeaturesHolder.class));
 
             // ... and the features set determined by authorities granted
             // to authorized user.
@@ -147,10 +144,11 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
 
     /**
      * Verifies if properly configured application (based on Spring Framework), will allow resolving handler parameters
-     * of default {@link FeaturesHolder} type ({@link DefaultFeaturesHolder}).
+     * of {@link FeaturesHolder} type.
      *
      * @throws Exception in case of any problems
      */
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
     @Test
     public void shouldAllowResolvingParametersOfDefaultFeaturesHolderType() throws Exception {
         try (final StaticApplicationContext context = new StaticApplicationContext()) {
@@ -166,17 +164,13 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
 
             // When we perform the request, handled by controller's method declaring FeaturesHolder as one
             // of the parameters.
-            final ResultActions resultActions = mockMvc.perform(get("/example.html").principal(principal));
+            final ResultActions resultActions = mockMvc.perform(get("/default.html").principal(principal));
 
             // Then the request should succeed, ...
             resultActions.andExpect(status().isOk());
 
             // ... with FeaturesHolder created for us, ...
             final FeaturesHolder featuresHolder = extractFeaturesHolder(resultActions);
-
-            // ... having appropriate type, ...
-            assertThat("Features Holder should have default type.", featuresHolder,
-                CoreMatchers.instanceOf(DefaultFeaturesHolder.class));
 
             // ... and the features set determined by authorities granted to authorized user.
             for (final Class<?> feature : featuresMap().get(ordinaryUser)) {

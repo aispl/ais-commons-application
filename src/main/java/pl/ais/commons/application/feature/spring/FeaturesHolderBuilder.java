@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationContext;
 
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.FeaturesHolderFactory;
-import pl.ais.commons.application.util.Assert;
 
 import com.google.common.base.Optional;
 
@@ -19,13 +18,14 @@ import com.google.common.base.Optional;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 final class FeaturesHolderBuilder {
 
-    private transient ApplicationContext context;
+    private final ApplicationContext context;
 
-    private transient FeaturesHolderFactory factory;
+    private final FeaturesHolderFactory factory;
 
-    private transient Map<Class<?>, Optional<?>> featuresMap;
+    private final Map<Class<?>, Optional<?>> featuresMap;
 
     /**
      * Constructs builder instance.
@@ -40,12 +40,6 @@ final class FeaturesHolderBuilder {
      */
     public FeaturesHolderBuilder(@Nonnull final FeaturesHolderFactory factory, @Nonnull final ApplicationContext context) {
         super();
-
-        // Verify constructor requirements, ...
-        Assert.notNull("Please provide the features holder factory.", factory);
-        Assert.notNull("Please, provide the application context.", context);
-
-        // ... and initialize this instance fields.
         this.context = context;
         this.factory = factory;
         this.featuresMap = new LinkedHashMap<>();
@@ -60,7 +54,9 @@ final class FeaturesHolderBuilder {
     public FeaturesHolderBuilder addFeature(@Nonnull final Class<?> feature) {
 
         // Verify method requirements, ...
-        Assert.notNull("Please, provide the feature.", feature);
+        if (null == feature) {
+            throw new IllegalArgumentException("Feature is required.");
+        }
 
         // ... check if the feature wasn't added yet, ...
         if (!featuresMap.containsKey(feature)) {

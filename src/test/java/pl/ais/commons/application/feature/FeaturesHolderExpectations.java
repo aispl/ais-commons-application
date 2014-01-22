@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableMap;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
+@SuppressWarnings("static-method")
 public class FeaturesHolderExpectations {
 
     /**
@@ -35,7 +36,6 @@ public class FeaturesHolderExpectations {
     /**
      * Verifies if an exception is raised when unsupported feature is accessed.
      */
-    @SuppressWarnings("static-method")
     @Test(expected = UnsupportedFeatureException.class)
     public void shouldRaiseExceptionOnUnsupportedFeatureAccess() {
 
@@ -52,7 +52,6 @@ public class FeaturesHolderExpectations {
     /**
      * Verifies if an exception is raised when virtual feature is accessed.
      */
-    @SuppressWarnings("static-method")
     @Test(expected = VirtualFeatureException.class)
     public void shouldRaiseExceptionOnVirtualFeatureAccess() {
 
@@ -69,7 +68,6 @@ public class FeaturesHolderExpectations {
     /**
      * Verifies if existing feature is correctly reported.
      */
-    @SuppressWarnings("static-method")
     @Test
     public void shouldReportCorrectlyExistingFeature() {
 
@@ -87,7 +85,6 @@ public class FeaturesHolderExpectations {
     /**
      * Verifies if non-existing feature is correctly reported.
      */
-    @SuppressWarnings("static-method")
     @Test
     public void shouldReportCorrectlyNonExistingFeature() {
 
@@ -105,7 +102,6 @@ public class FeaturesHolderExpectations {
     /**
      * Verifies if existing, non-virtual feature is correctly returned.
      */
-    @SuppressWarnings("static-method")
     @Test
     public void shouldReturnExistingFeature() {
 
@@ -119,4 +115,5 @@ public class FeaturesHolderExpectations {
         // ... then it should return the feature.
         assertNotNull("Should return feature.", feature);
     }
+
 }

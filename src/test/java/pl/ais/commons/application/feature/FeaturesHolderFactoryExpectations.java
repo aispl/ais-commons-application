@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableMap;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
+@SuppressWarnings("static-method")
 public class FeaturesHolderFactoryExpectations {
 
     /**
@@ -34,7 +35,6 @@ public class FeaturesHolderFactoryExpectations {
     /**
      * Verifies if custom {@link FeaturesHolderFactory} creates requested type instances.
      */
-    @SuppressWarnings("static-method")
     @Test
     public void customFactoryShouldCreateRequestedTypeInstances() {
 
@@ -52,7 +52,6 @@ public class FeaturesHolderFactoryExpectations {
     /**
      * Verifies if default {@link FeaturesHolderFactory} creates {@link DefaultFeaturesHolder} instances.
      */
-    @SuppressWarnings("static-method")
     @Test
     public void defaultFactoryShouldCreateDefaultFeaturesHolderInstances() {
 
@@ -71,7 +70,7 @@ public class FeaturesHolderFactoryExpectations {
      * Verifies if {@link FeaturesHolderFactory} throws {@link IllegalStateException} when broken
      * {@link FeaturesHolder} type was requested.
      */
-    @SuppressWarnings({"static-method", "unused"})
+    @SuppressWarnings("unused")
     @Test(expected = IllegalStateException.class)
     public void factoryShouldThrowExceptionWhenBrokenTypeRequested() {
 
@@ -88,7 +87,7 @@ public class FeaturesHolderFactoryExpectations {
      * Verifies if {@link FeaturesHolderFactory} throws {@link IllegalArgumentException} when unusable
      * {@link FeaturesHolder} type was requested.
      */
-    @SuppressWarnings({"static-method", "unused"})
+    @SuppressWarnings("unused")
     @Test(expected = IllegalArgumentException.class)
     public void factoryShouldThrowExceptionWhenUnusableTypeRequested() {
 
@@ -101,7 +100,6 @@ public class FeaturesHolderFactoryExpectations {
     /**
      * Verifies if {@link FeaturesHolderFactory} is using given features for created instances.
      */
-    @SuppressWarnings("static-method")
     @Test
     public void factoryShouldUseGivenFeaturesForCreatingInstances() {
 
