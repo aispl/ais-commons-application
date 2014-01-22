@@ -6,8 +6,6 @@ import java.io.StreamCorruptedException;
 
 import javax.annotation.Nonnull;
 
-import pl.ais.commons.application.util.Assert;
-
 /**
  * Base class to be extended by all feature related exceptions.
  *
@@ -35,7 +33,9 @@ public class FeatureException extends RuntimeException {
         super();
 
         // Verify constructor requirements first, ...
-        Assert.notNull("Please, provide the feature.", feature);
+        if (null == feature) {
+            throw new IllegalArgumentException("Feature is required.");
+        }
 
         // ... and initialize this instance fields.
         this.feature = feature;
