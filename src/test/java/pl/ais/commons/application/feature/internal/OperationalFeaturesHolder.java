@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javax.annotation.concurrent.Immutable;
 
-import pl.ais.commons.application.feature.DefaultFeaturesHolder;
+import pl.ais.commons.application.feature.FeaturesHolderSupport;
 import pl.ais.commons.application.feature.FeaturesHolder;
 
 import com.google.common.base.Optional;
@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
  * @since 1.1.1
  */
 @Immutable
-public final class OperationalFeaturesHolder extends DefaultFeaturesHolder {
+public final class OperationalFeaturesHolder extends FeaturesHolderSupport {
 
     /**
      * @param featuresMap mapping of the features owned by the holder

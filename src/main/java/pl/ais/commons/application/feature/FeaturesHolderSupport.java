@@ -1,41 +1,55 @@
 package pl.ais.commons.application.feature;
 
-import static com.google.common.base.Objects.toStringHelper;
-
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-
-import pl.ais.commons.application.util.Assert;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * Default implementation of {@link FeaturesHolder}.
+ * Base class to be extended by {@link FeaturesHolder} implementations.
  *
  * @author Warlock, AIS.PL
- * @since 1.0.1
+ * @since 1.1.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 @ThreadSafe
-public class DefaultFeaturesHolder implements FeaturesHolder {
+public class FeaturesHolderSupport implements FeaturesHolder {
 
-    private transient Map<Class<?>, Optional<?>> featuresMap;
+    private final Map<Class<?>, Optional<?>> featuresMap;
 
     /**
      * Constructs new instance.
      *
      * @param featuresMap mapping of features owned by the holder
      */
-    public DefaultFeaturesHolder(@Nonnull final Map<Class<?>, Optional<?>> featuresMap) {
+    protected FeaturesHolderSupport(@Nonnull final Map<Class<?>, Optional<?>> featuresMap) {
         super();
 
         // Verify constructor requirements, ...
-        Assert.notNull("Please, provide desired features map.", featuresMap);
+        if (null == featuresMap) {
+            throw new IllegalArgumentException("Features map is required.");
+        }
 
         // ... and initialize this instance fields.
         this.featuresMap = ImmutableMap.copyOf(featuresMap);
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    @SuppressWarnings("PMD.UselessParentheses")
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (null != object) && (getClass() == object.getClass())) {
+            final FeaturesHolderSupport other = (FeaturesHolderSupport) object;
+            result = Objects.equals(featuresMap, other.featuresMap);
+        }
+        return result;
     }
 
     /**
@@ -46,7 +60,9 @@ public class DefaultFeaturesHolder implements FeaturesHolder {
         VirtualFeatureException {
 
         // Verify method requirements, ...
-        Assert.notNull("Please, provide the feature.", feature);
+        if (null == feature) {
+            throw new IllegalArgumentException("Feature is required.");
+        }
 
         // ... try to find feature handler, raise an exception if this feature is unsupported, ...
         final Optional<F> handler = (Optional<F>) featuresMap.get(feature);
@@ -62,24 +78,33 @@ public class DefaultFeaturesHolder implements FeaturesHolder {
     }
 
     /**
+     * @return unmodifiable view of the features owned by the holder
+     */
+    protected Map<Class<?>, Optional<?>> getFeaturesMap() {
+        return featuresMap;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public boolean hasFeature(@Nonnull final Class<?> feature) {
 
         // Verify method requirements, ...
-        Assert.notNull("Please, provide the feature.", feature);
+        if (null == feature) {
+            throw new IllegalArgumentException("Feature is required.");
+        }
 
         // ... and do the work.
         return featuresMap.containsKey(feature);
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see java.lang.Object#hashCode()
      */
     @Override
-    public String toString() {
-        return toStringHelper(this).add("features", featuresMap.keySet()).toString();
+    public int hashCode() {
+        return Objects.hashCode(featuresMap);
     }
 
 }
