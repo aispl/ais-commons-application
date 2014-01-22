@@ -121,7 +121,7 @@ public final class FeaturesHolderMethodArgumentResolver implements ApplicationCo
      */
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return FeaturesHolder.class.isAssignableFrom(parameter.getParameterType());
+        return parameter.getParameterType().isAssignableFrom(factory.getProductClass());
     }
 
 }
