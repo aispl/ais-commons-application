@@ -16,10 +16,8 @@ import pl.ais.commons.query.Selection;
 import pl.ais.commons.query.SelectionFactory;
 import pl.ais.commons.query.Selections;
 
-import com.google.common.base.Function;
-
 /**
- * Adapts ...
+ * Adapts {@link SearchResultsProvider} as the {@link TabularDataProvider}.
  *
  * @param <E> the type of each search result
  * @author Warlock, AIS.PL
@@ -27,22 +25,13 @@ import com.google.common.base.Function;
  */
 @Immutable
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-final class SearchResultsAdapter<E extends Serializable> implements TabularDataProvider {
+public final class SearchResultsAdapter<E extends Serializable> implements TabularDataProvider {
 
     /**
-     * Defines the API contract for converting {@link SearchResults} into tabular data.
+     * Adapts ordered results provided by {@link SearchResultsProvider}.
      *
-     * @param <E> the type of each search result
-     */
-    interface Converter<E extends Serializable> extends Function<SearchResults<E>, Object[][]> {
-
-        // Empty by design ...
-
-    }
-
-    /**
-     * @param <R>
-     * @param <S>
+     * @param <R> the type of ordering
+     * @param <S> the type of selection
      */
     @Immutable
     private final class OrderedSearchResultsAdapter<R extends Serializable, S extends Selection<R>> implements
@@ -91,7 +80,7 @@ final class SearchResultsAdapter<E extends Serializable> implements TabularDataP
             startIndex, displayLength, selectionFactory);
     }
 
-    private final Converter<E> converter;
+    private final SearchResultsConverter<E> converter;
 
     private final SearchResultsProvider<E> provider;
 
@@ -101,7 +90,7 @@ final class SearchResultsAdapter<E extends Serializable> implements TabularDataP
      * @param provider search results provider
      * @param converter search results converter
      */
-    public SearchResultsAdapter(final SearchResultsProvider<E> provider, final Converter<E> converter) {
+    public SearchResultsAdapter(final SearchResultsProvider<E> provider, final SearchResultsConverter<E> converter) {
         this.converter = converter;
         this.provider = provider;
     }
