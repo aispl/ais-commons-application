@@ -19,7 +19,7 @@ public final class TabularData {
      * @param converter search results converter
      * @return adapted {@link SearchResultsProvider}
      */
-    public static <E extends Serializable> SearchResultsAdapter<E> adapt(
+    public static <E extends Serializable> SearchResultsAdapter<E> adaptSearchResults(
         final SearchResultsProvider<E> provider, final SearchResultsConverter<E> converter) {
         return new SearchResultsAdapter<>(provider, converter);
     }
