@@ -82,8 +82,8 @@ public class TabularDataExpectations {
     class ReversingComparator<T extends Comparable<T>> implements Comparator<T>, Serializable {
 
         @Override
-        public int compare(final T o1, final T o2) {
-            return -o1.compareTo(o2);
+        public int compare(final T object1, final T object2) {
+            return -object1.compareTo(object2);
         }
     }
 
