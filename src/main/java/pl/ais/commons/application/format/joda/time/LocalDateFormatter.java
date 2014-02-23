@@ -1,4 +1,4 @@
-package pl.ais.commons.application.util.format;
+package pl.ais.commons.application.format.joda.time;
 
 import java.text.ParseException;
 import java.util.Locale;
@@ -46,7 +46,7 @@ public final class LocalDateFormatter implements Formatter<LocalDate> {
     }
 
     /**
-     * @see org.springframework.format.Parser#parse(java.lang.String, java.util.Locale)
+     * {@inheritDoc}
      */
     @Override
     @SuppressWarnings("PMD.NullAssignment")
@@ -56,7 +56,7 @@ public final class LocalDateFormatter implements Formatter<LocalDate> {
     }
 
     /**
-     * @see org.springframework.format.Printer#print(java.lang.Object, java.util.Locale)
+     * {@inheritDoc}
      */
     @Override
     @SuppressWarnings("PMD.NullAssignment")
