@@ -1,4 +1,4 @@
-package pl.ais.commons.application.validator.spring;
+package pl.ais.commons.application.validation.spring;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

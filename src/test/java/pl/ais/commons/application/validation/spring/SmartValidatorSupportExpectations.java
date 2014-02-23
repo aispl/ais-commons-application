@@ -1,4 +1,4 @@
-package pl.ais.commons.application.validator.spring;
+package pl.ais.commons.application.validation.spring;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -44,6 +44,10 @@ public class SmartValidatorSupportExpectations {
 
     }
 
+    /**
+     * Example entity to be validated.
+     */
+    @SuppressWarnings("PMD.AtLeastOneConstructor")
     class ExampleEntitySubclass extends ExampleEntity {
 
         // Empty by design ...
@@ -59,7 +63,7 @@ public class SmartValidatorSupportExpectations {
          */
         @Override
         protected void validateEntity(final ExampleEntity entity, final Errors errors, final Object... validationHints) {
-            boolean mandatory = !Arrays.asList(validationHints).contains(OptionalHint.class);
+            final boolean mandatory = !Arrays.asList(validationHints).contains(OptionalHint.class);
             if (mandatory && (null == entity.getProperty())) {
                 errors.reject("required", new Object[] {}, "Property cannot be null.");
             }
@@ -94,6 +98,7 @@ public class SmartValidatorSupportExpectations {
     /**
      * Verifies if validation hints are accepted by the validator.
      */
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     @Test
     public void shouldAcceptValidationHints() {
 
@@ -112,6 +117,7 @@ public class SmartValidatorSupportExpectations {
     /**
      * Verifies if valid entity instance is accepted by the validator.
      */
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     @Test
     public void shouldAcceptValidEntity() {
 
@@ -131,6 +137,7 @@ public class SmartValidatorSupportExpectations {
     /**
      * Verifies if invalid entity instance is rejected by the validator.
      */
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     @Test
     public void shouldRejectInvalidEntity() {
 
