@@ -55,9 +55,10 @@ public class FeaturesHolderSupport implements FeaturesHolder {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <F> F getFeature(@Nonnull final Class<F> feature) throws UnsupportedFeatureException,
-        VirtualFeatureException {
+    VirtualFeatureException {
 
         // Verify method requirements, ...
         if (null == feature) {

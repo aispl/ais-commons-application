@@ -22,9 +22,8 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
      * @param formatter the formatter to adapt
      * @return new {@link PropertyEditor property editor} instance backed by given formatter.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static PropertyEditor adapt(final Formatter<?> formatter) {
-        return new DelegatingPropertyEditor(formatter);
+    public static <T> PropertyEditor adapt(final Formatter<T> formatter) {
+        return new DelegatingPropertyEditor<>(formatter);
     }
 
     /**
@@ -36,13 +35,12 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
      *         instances using given {@code formatter}
      * @since 1.0.2
      */
-    public static PropertyEditorFactory factoryFor(final Formatter<?> formatter) {
+    public static <T> PropertyEditorFactory factoryFor(final Formatter<T> formatter) {
         return new PropertyEditorFactory() {
 
-            @SuppressWarnings({"rawtypes", "unchecked"})
             @Override
             public PropertyEditor newPropertyEditor() {
-                return new DelegatingPropertyEditor(formatter);
+                return new DelegatingPropertyEditor<>(formatter);
             }
         };
     }
@@ -64,7 +62,16 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
      */
     @Override
     public String getAsText() {
-        return formatter.print((T) getValue(), LocaleContextHolder.getLocale());
+        return formatter.print(getValue(), LocaleContextHolder.getLocale());
+    }
+
+    /**
+     * @see java.beans.PropertyEditorSupport#getValue()
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public T getValue() {
+        return (T) super.getValue();
     }
 
     /**
