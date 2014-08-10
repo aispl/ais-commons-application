@@ -1,28 +1,17 @@
 package pl.ais.commons.application.util.jquery.datatables;
 
-import static junit.framework.Assert.assertEquals;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import pl.ais.commons.query.*;
 
-import pl.ais.commons.query.AbstractSelection;
-import pl.ais.commons.query.SearchResults;
-import pl.ais.commons.query.SearchResultsProvider;
-import pl.ais.commons.query.Selection;
-import pl.ais.commons.query.SelectionFactory;
+import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.*;
 
-import com.google.common.collect.ImmutableList;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Verifies {@link TabularData} expectations.
@@ -37,7 +26,7 @@ public class TabularDataExpectations {
      * Custom Selection.
      */
     @SuppressWarnings("serial")
-    private class CustomSelection<R extends Serializable & Comparator<? super Integer>> extends AbstractSelection<R> {
+    private class CustomSelection<R extends Serializable> extends AbstractSelection<R> {
 
         /**
          * @param startIndex
@@ -61,18 +50,24 @@ public class TabularDataExpectations {
     /**
      * Custom Selection Factory.
      */
-    class CustomSelectionFactory<R extends Comparator<? super Integer> & Serializable> implements
+    class CustomSelectionFactory<R extends Serializable> implements
         SelectionFactory<R, CustomSelection<R>> {
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public CustomSelection<R> createSelection(
-            final int startIndex, final int displayLength, final List<? extends R> orderings) {
-            return new CustomSelection<>(startIndex, displayLength, orderings);
+        public CustomSelection<R> createSelection(final int startIndex, final int displayLength, final R... orderings) {
+            return new CustomSelection<>(startIndex, displayLength, Arrays.asList(orderings));
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Class<?> getOrderingType() {
+            return Serializable.class;
+        }
     }
 
     /**
@@ -113,12 +108,12 @@ public class TabularDataExpectations {
              */
             @SuppressWarnings("unchecked")
             @Override
-            public SearchResults<Integer> provideForSelection(final Selection<?> selection) {
+            public SearchResults<Integer> provideForSelection(final Selection selection) {
                 final List<Integer> results = new ArrayList<>();
                 for (int i = 0; i < 100; i++) {
                     results.add(Integer.valueOf(i));
                 }
-                for (final Serializable comparator : selection.getOrderings()) {
+                for (final Serializable comparator : (List<Serializable>) selection.getOrderings()) {
                     Collections.sort(results, (Comparator<? super Integer>) comparator);
                 }
 
