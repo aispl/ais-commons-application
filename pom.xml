@@ -40,8 +40,8 @@
     </developers>
 
     <properties>
-        <spring.version>4.0.0.RELEASE</spring.version>
-        <spring.security.version>3.2.0.RELEASE</spring.security.version>
+        <spring.version>4.0.6.RELEASE</spring.version>
+        <spring.security.version>3.2.4.RELEASE</spring.security.version>
     </properties>
 
     <build>
@@ -107,12 +107,12 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>2.0.1</version>
+            <version>2.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>16.0</version>
+            <version>17.0</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -150,7 +150,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
-            <version>4.10</version>
+            <version>4.11</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -174,7 +174,7 @@
         <dependency>
             <groupId>pl.ais.commons</groupId>
             <artifactId>ais-commons-query</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>1.1.2</version>
         </dependency>
     </dependencies>
 
