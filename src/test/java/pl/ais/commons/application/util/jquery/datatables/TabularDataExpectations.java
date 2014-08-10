@@ -22,6 +22,97 @@ import static junit.framework.Assert.assertEquals;
 @SuppressWarnings("static-method")
 public class TabularDataExpectations {
 
+    private static SearchResultsConverter<Integer> createConverter() {
+        return new SearchResultsConverter<Integer>() {
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public Object[][] apply(final SearchResults<Integer> results) {
+                final ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
+                for (final Integer element : results.getElements()) {
+                    builder.add(new Object[]{element});
+                }
+                return builder.build().toArray(new Object[0][0]);
+            }
+
+        };
+    }
+
+    private static SearchResultsProvider<Integer> createSearchResultsProvider() {
+        return new SearchResultsProvider<Integer>() {
+
+            /**
+             * {@inheritDoc}
+             */
+            @SuppressWarnings("unchecked")
+            @Override
+            public SearchResults<Integer> provideForSelection(final Selection selection) {
+                final List<Integer> results = new ArrayList<>();
+                for (int i = 0; i < 100; i++) {
+                    results.add(Integer.valueOf(i));
+                }
+                for (final Serializable comparator : (List<Serializable>) selection.getOrderings()) {
+                    Collections.sort(results, (Comparator<? super Integer>) comparator);
+                }
+
+                final int from = selection.getStartIndex();
+                return new SearchResults<>(results.subList(from,
+                    Math.min(selection.isSelectingSubset() ? from + selection.getDisplayLength() : 100, 100)), 100);
+            }
+
+        };
+    }
+
+    /**
+     * Verifies if ordering selected by the user is applied to the data.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void shouldApplyOrderingToTheData() {
+
+        // Given Search Results provider, data converter and HTTP request for ordered tabular data, ...
+        final SearchResultsProvider<Integer> provider = createSearchResultsProvider();
+        final SearchResultsConverter<Integer> converter = createConverter();
+
+        final HttpServletRequest request = MockMvcRequestBuilders.get("/doit.html")
+                                                                 .param(JQueryDataTables.DISPLAY_START, "10").param(JQueryDataTables.DISPLAY_LENGTH, "5")
+                                                                 .param(JQueryDataTables.SORT_COLS_NO, "1").param(JQueryDataTables.SORT_COL_PREFIX + "0", "0")
+                                                                 .buildRequest(new MockServletContext());
+
+        // ... when we build the tabular data in response to the request, ...
+        final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).orderedWith(
+            new CustomSelectionFactory<ReversingComparator<Integer>>(),
+            new ReversingComparator[]{new ReversingComparator<Integer>()}).inResponseTo(request);
+
+        // ... then data should start with row holding number 89.
+        final Object[][] data = (Object[][]) result.get(JQueryDataTables.DATA);
+        assertEquals("First result selected should be 89.", Integer.valueOf(89), data[0][0]);
+    }
+
+    /**
+     * Verifies if selection provided by user is applied to the data.
+     */
+    @Test
+    public void shouldApplySelectionToTheData() {
+
+        // Given Search Results provider, data converter and HTTP request for tabular data, ...
+        final SearchResultsProvider<Integer> provider = createSearchResultsProvider();
+        final SearchResultsConverter<Integer> converter = createConverter();
+
+        final HttpServletRequest request = MockMvcRequestBuilders.get("/doit.html")
+                                                                 .param(JQueryDataTables.DISPLAY_START, "10").param(JQueryDataTables.DISPLAY_LENGTH, "5")
+                                                                 .buildRequest(new MockServletContext());
+
+        // ... when we build the tabular data in response to the request, ...
+        final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).inResponseTo(request);
+
+        // ... then data should start with row holding number 10.
+        final Object[][] data = (Object[][]) result.get(JQueryDataTables.DATA);
+        assertEquals("First result selected should be 10.", Integer.valueOf(10), data[0][0]);
+    }
+
     /**
      * Custom Selection.
      */
@@ -80,97 +171,6 @@ public class TabularDataExpectations {
         public int compare(final T object1, final T object2) {
             return -object1.compareTo(object2);
         }
-    }
-
-    private static SearchResultsConverter<Integer> createConverter() {
-        return new SearchResultsConverter<Integer>() {
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Object[][] apply(final SearchResults<Integer> results) {
-                final ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
-                for (final Integer element : results.getElements()) {
-                    builder.add(new Object[] {element});
-                }
-                return builder.build().toArray(new Object[0][0]);
-            }
-
-        };
-    }
-
-    private static SearchResultsProvider<Integer> createSearchResultsProvider() {
-        return new SearchResultsProvider<Integer>() {
-
-            /**
-             * {@inheritDoc}
-             */
-            @SuppressWarnings("unchecked")
-            @Override
-            public SearchResults<Integer> provideForSelection(final Selection selection) {
-                final List<Integer> results = new ArrayList<>();
-                for (int i = 0; i < 100; i++) {
-                    results.add(Integer.valueOf(i));
-                }
-                for (final Serializable comparator : (List<Serializable>) selection.getOrderings()) {
-                    Collections.sort(results, (Comparator<? super Integer>) comparator);
-                }
-
-                final int from = selection.getStartIndex();
-                return new SearchResults<>(results.subList(from,
-                    Math.min(selection.isSelectingSubset() ? from + selection.getDisplayLength() : 100, 100)), 100);
-            }
-
-        };
-    }
-
-    /**
-     * Verifies if ordering selected by the user is applied to the data.
-     */
-    @SuppressWarnings("unchecked")
-    @Test
-    public void shouldApplyOrderingToTheData() {
-
-        // Given Search Results provider, data converter and HTTP request for ordered tabular data, ...
-        final SearchResultsProvider<Integer> provider = createSearchResultsProvider();
-        final SearchResultsConverter<Integer> converter = createConverter();
-
-        final HttpServletRequest request = MockMvcRequestBuilders.get("/doit.html")
-            .param(JQueryDataTables.DISPLAY_START, "10").param(JQueryDataTables.DISPLAY_LENGTH, "5")
-            .param(JQueryDataTables.SORT_COLS_NO, "1").param(JQueryDataTables.SORT_COL_PREFIX + "0", "0")
-            .buildRequest(new MockServletContext());
-
-        // ... when we build the tabular data in response to the request, ...
-        final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).orderedWith(
-            new CustomSelectionFactory<ReversingComparator<Integer>>(),
-            new ReversingComparator[] {new ReversingComparator<Integer>()}).inResponseTo(request);
-
-        // ... then data should start with row holding number 89.
-        final Object[][] data = (Object[][]) result.get(JQueryDataTables.DATA);
-        assertEquals("First result selected should be 89.", Integer.valueOf(89), data[0][0]);
-    }
-
-    /**
-     * Verifies if selection provided by user is applied to the data.
-     */
-    @Test
-    public void shouldApplySelectionToTheData() {
-
-        // Given Search Results provider, data converter and HTTP request for tabular data, ...
-        final SearchResultsProvider<Integer> provider = createSearchResultsProvider();
-        final SearchResultsConverter<Integer> converter = createConverter();
-
-        final HttpServletRequest request = MockMvcRequestBuilders.get("/doit.html")
-            .param(JQueryDataTables.DISPLAY_START, "10").param(JQueryDataTables.DISPLAY_LENGTH, "5")
-            .buildRequest(new MockServletContext());
-
-        // ... when we build the tabular data in response to the request, ...
-        final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).inResponseTo(request);
-
-        // ... then data should start with row holding number 10.
-        final Object[][] data = (Object[][]) result.get(JQueryDataTables.DATA);
-        assertEquals("First result selected should be 10.", Integer.valueOf(10), data[0][0]);
     }
 
 }
