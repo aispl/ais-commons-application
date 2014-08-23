@@ -4,3 +4,5 @@
 /.project
 .idea
 ais-commons-application.iml
+.metadata
+atlassian-ide-plugin.xml
