@@ -1,20 +1,19 @@
 package pl.ais.commons.application.util.jquery.datatables;
 
-import static org.springframework.web.bind.ServletRequestUtils.getIntParameter;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
-
 import pl.ais.commons.query.SearchResults;
 import pl.ais.commons.query.SearchResultsProvider;
 import pl.ais.commons.query.Selection;
 import pl.ais.commons.query.SelectionFactory;
 import pl.ais.commons.query.Selections;
+
+import javax.annotation.concurrent.Immutable;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.web.bind.ServletRequestUtils.getIntParameter;
 
 /**
  * Adapts {@link SearchResultsProvider} as the {@link TabularDataProvider}.
@@ -130,7 +129,7 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
     @SafeVarargs
     @SuppressWarnings("PMD.UnnecessaryFinalModifier")
     public final <R extends Serializable, S extends Selection<R>> TabularDataProvider orderedWith(
-        final SelectionFactory<R, S> selectionFactory, final R... orderings) {
+        final SelectionFactory<R, S> selectionFactory, final R[]... orderings) {
         return new OrderedSearchResultsAdapter<>(selectionFactory, orderings);
     }
 
