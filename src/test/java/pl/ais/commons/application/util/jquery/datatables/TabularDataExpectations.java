@@ -93,7 +93,7 @@ public class TabularDataExpectations {
         // ... when we build the tabular data in response to the request, ...
         final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).orderedWith(
             new CustomSelectionFactory<ReversingComparator<Integer>>(),
-            new ReversingComparator[] {new ReversingComparator<Integer>()}).inResponseTo(request);
+            new ReversingComparator[][] {new ReversingComparator[] {new ReversingComparator<Integer>()}}).inResponseTo(request);
 
         // ... then data should start with row holding number 89.
         final Object[][] data = (Object[][]) result.get(JQueryDataTables.DATA);
