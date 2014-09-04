@@ -4,12 +4,21 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.ais.commons.query.*;
+import pl.ais.commons.query.AbstractSelection;
+import pl.ais.commons.query.SearchResults;
+import pl.ais.commons.query.SearchResultsProvider;
+import pl.ais.commons.query.Selection;
+import pl.ais.commons.query.SelectionFactory;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -32,7 +41,7 @@ public class TabularDataExpectations {
             public Object[][] apply(final SearchResults<Integer> results) {
                 final ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
                 for (final Integer element : results.getElements()) {
-                    builder.add(new Object[]{element});
+                    builder.add(new Object[] {element});
                 }
                 return builder.build().toArray(new Object[0][0]);
             }
@@ -84,7 +93,7 @@ public class TabularDataExpectations {
         // ... when we build the tabular data in response to the request, ...
         final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).orderedWith(
             new CustomSelectionFactory<ReversingComparator<Integer>>(),
-            new ReversingComparator[]{new ReversingComparator<Integer>()}).inResponseTo(request);
+            new ReversingComparator[] {new ReversingComparator<Integer>()}).inResponseTo(request);
 
         // ... then data should start with row holding number 89.
         final Object[][] data = (Object[][]) result.get(JQueryDataTables.DATA);
