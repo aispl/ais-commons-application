@@ -6,12 +6,14 @@ import pl.ais.commons.query.Selection;
 import pl.ais.commons.query.SelectionFactory;
 import pl.ais.commons.query.Selections;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.web.bind.ServletRequestUtils.getIntParameter;
 
@@ -25,6 +27,73 @@ import static org.springframework.web.bind.ServletRequestUtils.getIntParameter;
 @Immutable
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public final class SearchResultsAdapter<E extends Serializable> implements TabularDataProvider {
+
+    private final SearchResultsConverter<E> converter;
+
+    private final SearchResultsProvider<E> provider;
+
+    /**
+     * Constructs new instance.
+     *
+     * @param provider  search results provider
+     * @param converter search results converter
+     */
+    public SearchResultsAdapter(@Nonnull final SearchResultsProvider<E> provider,
+                                @Nonnull final SearchResultsConverter<E> converter) {
+
+        // Verify constructor requirements, ...
+        Objects.requireNonNull(provider, "Provider is required");
+        Objects.requireNonNull(converter, "Converter is required");
+
+        // ... and initialize this instance fields.
+        this.converter = converter;
+        this.provider = provider;
+    }
+
+    protected static <R extends Serializable, S extends Selection<R>> Selection<R> createSelection(
+        final HttpServletRequest request, final SelectionFactory<R, S> selectionFactory) {
+        final int startIndex = getIntParameter(request, JQueryDataTables.DISPLAY_START, 0);
+        final int displayLength = getIntParameter(request, JQueryDataTables.DISPLAY_LENGTH, -1);
+        return null == selectionFactory ? Selections.<R>slice(startIndex, displayLength) : Selections.slice(
+            startIndex, displayLength, selectionFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Object> inResponseTo(final HttpServletRequest request) {
+        return inResponseTo(createSelection(request, null));
+    }
+
+    /**
+     * Creates a Map holding all information required by jQuery DataTables for viewing the data.
+     *
+     * @param selection
+     * @return a Map holding all information required by jQuery DataTables for viewing the data
+     */
+    @SuppressWarnings("boxing")
+    protected <R extends Serializable> Map<String, Object> inResponseTo(final Selection<R> selection) {
+        final SearchResults<E> results = provider.provideForSelection(selection);
+
+        final Map<String, Object> result = new HashMap<>();
+        result.put(JQueryDataTables.DATA, converter.apply(results));
+        result.put(JQueryDataTables.TOTAL_NO, results.getTotalRecords());
+        result.put(JQueryDataTables.FILTERED_NO, results.getTotalRecords());
+        return result;
+    }
+
+    /**
+     * Returns {@link TabularDataProvider} using given selection factory and orderings.
+     *
+     * @param selectionFactory selection factory
+     * @param orderings        orderings to be used
+     * @return {@link TabularDataProvider} instance
+     */
+    public <R extends Serializable, S extends Selection<R>> TabularDataProvider orderedWith(
+        final SelectionFactory<R, S> selectionFactory, final R[][] orderings) {
+        return new OrderedSearchResultsAdapter<>(selectionFactory, orderings);
+    }
 
     /**
      * Adapts ordered results provided by {@link SearchResultsProvider}.
@@ -44,10 +113,9 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
          * Constructs new instance.
          *
          * @param selectionFactory selection factory
-         * @param orderings data orderings
+         * @param orderings        data orderings
          */
-        @SafeVarargs
-        protected OrderedSearchResultsAdapter(final SelectionFactory<R, S> selectionFactory, final R[]... orderings) {
+        protected OrderedSearchResultsAdapter(final SelectionFactory<R, S> selectionFactory, final R[][] orderings) {
             this.orderings = Arrays.copyOf(orderings, orderings.length);
             this.selectionFactory = selectionFactory;
         }
@@ -69,68 +137,6 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
             return SearchResultsAdapter.this.inResponseTo(selection);
         }
 
-    }
-
-    protected static <R extends Serializable, S extends Selection<R>> Selection<R> createSelection(
-        final HttpServletRequest request, final SelectionFactory<R, S> selectionFactory) {
-        final int startIndex = getIntParameter(request, JQueryDataTables.DISPLAY_START, 0);
-        final int displayLength = getIntParameter(request, JQueryDataTables.DISPLAY_LENGTH, -1);
-        return null == selectionFactory ? Selections.<R> slice(startIndex, displayLength) : Selections.slice(
-            startIndex, displayLength, selectionFactory);
-    }
-
-    private final SearchResultsConverter<E> converter;
-
-    private final SearchResultsProvider<E> provider;
-
-    /**
-     * Constructs new instance.
-     *
-     * @param provider search results provider
-     * @param converter search results converter
-     */
-    public SearchResultsAdapter(final SearchResultsProvider<E> provider, final SearchResultsConverter<E> converter) {
-        this.converter = converter;
-        this.provider = provider;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Object> inResponseTo(final HttpServletRequest request) {
-        return inResponseTo(createSelection(request, null));
-    }
-
-    /**
-     * Creates a Map holding all informations required by jQuery DataTables for viewing the data.
-     *
-     * @param selection
-     * @return a Map holding all informations required by jQuery DataTables for viewing the data
-     */
-    @SuppressWarnings("boxing")
-    protected <R extends Serializable> Map<String, Object> inResponseTo(final Selection<R> selection) {
-        final SearchResults<E> results = provider.provideForSelection(selection);
-
-        final Map<String, Object> result = new HashMap<>();
-        result.put(JQueryDataTables.DATA, converter.apply(results));
-        result.put(JQueryDataTables.TOTAL_NO, results.getTotalRecords());
-        result.put(JQueryDataTables.FILTERED_NO, results.getTotalRecords());
-        return result;
-    }
-
-    /**
-     * Returns {@link TabularDataProvider} using given selection factory and orderings.
-     *
-     * @param selectionFactory selection factory
-     * @param orderings orderings to be used
-     * @return {@link TabularDataProvider} instance
-     */
-    @SafeVarargs
-    @SuppressWarnings("PMD.UnnecessaryFinalModifier")
-    public final <R extends Serializable, S extends Selection<R>> TabularDataProvider orderedWith(
-        final SelectionFactory<R, S> selectionFactory, final R[]... orderings) {
-        return new OrderedSearchResultsAdapter<>(selectionFactory, orderings);
     }
 
 }
