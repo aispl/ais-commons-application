@@ -1,7 +1,6 @@
 package pl.ais.commons.application.util.jquery.datatables;
 
 import pl.ais.commons.query.SearchResults;
-import pl.ais.commons.query.SearchResultsProvider;
 import pl.ais.commons.query.Selection;
 import pl.ais.commons.query.SelectionFactory;
 import pl.ais.commons.query.Selections;
@@ -74,7 +73,7 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
      */
     @SuppressWarnings("boxing")
     private <R extends Serializable> Map<String, Object> inResponseTo(final Selection<R> selection) {
-        final SearchResults<E> results = provider.provideForSelection(selection);
+        final SearchResults<E> results = provider.apply(selection);
 
         final Map<String, Object> result = new HashMap<>();
         result.put(JQueryDataTables.DATA, converter.apply(results));

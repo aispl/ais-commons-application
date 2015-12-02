@@ -5,7 +5,6 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.ais.commons.query.AbstractSelection;
 import pl.ais.commons.query.SearchResults;
-import pl.ais.commons.query.SearchResultsProvider;
 import pl.ais.commons.query.Selection;
 import pl.ais.commons.query.SelectionFactory;
 
@@ -58,7 +57,7 @@ public class TabularDataExpectations {
              */
             @SuppressWarnings("unchecked")
             @Override
-            public SearchResults<Integer> provideForSelection(final Selection selection) {
+            public SearchResults<Integer> apply(final Selection selection) {
                 final List<Integer> results = new ArrayList<>();
                 for (int i = 0; i < 100; i++) {
                     results.add(Integer.valueOf(i));
