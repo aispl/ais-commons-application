@@ -1,11 +1,11 @@
 package pl.ais.commons.application.util.property;
 
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.format.Formatter;
+
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.text.ParseException;
-
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.format.Formatter;
 
 /**
  * {@link PropertyEditor} delegating the work to {@link Formatter}.
@@ -15,6 +15,18 @@ import org.springframework.format.Formatter;
  * @since 1.0.1
  */
 public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
+
+    private final Formatter<T> formatter;
+
+    /**
+     * Constructs new instance.
+     *
+     * @param formatter
+     */
+    public DelegatingPropertyEditor(final Formatter<T> formatter) {
+        super();
+        this.formatter = formatter;
+    }
 
     /**
      * Adapts given {@link Formatter formatter} as {@link PropertyEditor property editor}.
@@ -32,7 +44,7 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
      *
      * @param formatter the formatter which will be used by property editors created by the factory
      * @return {@link PropertyEditorFactory} creating {@link DelegatingPropertyEditor}
-     *         instances using given {@code formatter}
+     * instances using given {@code formatter}
      * @since 1.0.2
      */
     public static <T> PropertyEditorFactory factoryFor(final Formatter<T> formatter) {
@@ -43,18 +55,6 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
                 return new DelegatingPropertyEditor<>(formatter);
             }
         };
-    }
-
-    private final transient Formatter<T> formatter;
-
-    /**
-     * Constructs new instance.
-     *
-     * @param formatter
-     */
-    public DelegatingPropertyEditor(final Formatter<T> formatter) {
-        super();
-        this.formatter = formatter;
     }
 
     /**

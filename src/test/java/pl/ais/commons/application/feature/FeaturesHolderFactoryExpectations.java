@@ -1,20 +1,19 @@
 package pl.ais.commons.application.feature;
 
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.Map;
-
 import org.junit.Test;
-
 import pl.ais.commons.application.feature.internal.BrokenFeaturesHolder;
 import pl.ais.commons.application.feature.internal.FeatureA;
 import pl.ais.commons.application.feature.internal.OperationalFeaturesHolder;
 import pl.ais.commons.application.feature.internal.UnusableFeaturesHolder;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Verifies {@link FeaturesHolderFactory} expectations.
@@ -29,7 +28,7 @@ public class FeaturesHolderFactoryExpectations {
      * @return empty features map
      */
     private static Map<Class<?>, Optional<?>> emptyFeaturesMap() {
-        return ImmutableMap.<Class<?>, Optional<?>> of();
+        return Collections.emptyMap();
     }
 
     /**
@@ -107,8 +106,9 @@ public class FeaturesHolderFactoryExpectations {
         final FeaturesHolderFactory factory = FeaturesHolderFactory.getInstance();
 
         // ... when we create FeaturesHolder with some feature, ...
-        final Map<Class<?>, Optional<?>> featuresMap = ImmutableMap.<Class<?>, Optional<?>> builder()
-            .put(FeatureA.class, Optional.absent()).build();
+        final Map<Class<?>, Optional<?>> featuresMap = new LinkedHashMap<>();
+        featuresMap.put(FeatureA.class, Optional.empty());
+
         final FeaturesHolder featuresHolder = factory.createFeaturesHolder(featuresMap);
 
         // ... then factory should use given features for created instances

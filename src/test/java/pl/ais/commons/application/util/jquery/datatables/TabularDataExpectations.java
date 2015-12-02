@@ -1,6 +1,5 @@
 package pl.ais.commons.application.util.jquery.datatables;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -15,11 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.toList;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -39,11 +40,11 @@ public class TabularDataExpectations {
              */
             @Override
             public Object[][] apply(final SearchResults<Integer> results) {
-                final ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
+                final List<Object[]> result = new ArrayList<>();
                 for (final Integer element : results.getElements()) {
-                    builder.add(new Object[] {element});
+                    result.add(new Object[] {element});
                 }
-                return builder.build().toArray(new Object[0][0]);
+                return result.toArray(new Object[0][0]);
             }
 
         };
@@ -62,13 +63,13 @@ public class TabularDataExpectations {
                 for (int i = 0; i < 100; i++) {
                     results.add(Integer.valueOf(i));
                 }
-                for (final Serializable comparator : (List<Serializable>) selection.getOrderings()) {
+                for (final Object comparator : selection.getOrderings()) {
                     Collections.sort(results, (Comparator<? super Integer>) comparator);
                 }
 
                 final int from = selection.getStartIndex();
-                return new SearchResults<>(results.subList(from,
-                    Math.min(selection.isSelectingSubset() ? from + selection.getDisplayLength() : 100, 100)), 100);
+                return SearchResults.of(100, results.subList(from,
+                    Math.min(selection.isSelectingSubset() ? from + selection.getDisplayLength() : 100, 100)));
             }
 
         };
@@ -92,7 +93,7 @@ public class TabularDataExpectations {
 
         // ... when we build the tabular data in response to the request, ...
         final Map<String, Object> result = TabularData.adaptSearchResults(provider, converter).orderedWith(
-            new CustomSelectionFactory<ReversingComparator<Integer>>(),
+            new CustomSelectionFactory(),
             new ReversingComparator[][] {new ReversingComparator[] {new ReversingComparator<Integer>()}}).inResponseTo(request);
 
         // ... then data should start with row holding number 89.
@@ -126,23 +127,20 @@ public class TabularDataExpectations {
      * Custom Selection.
      */
     @SuppressWarnings("serial")
-    private class CustomSelection<R extends Serializable> extends AbstractSelection<R> {
+    private class CustomSelection extends AbstractSelection<ReversingComparator> {
 
-        /**
-         * @param startIndex
-         * @param displayLength
-         * @param orderings
-         */
-        public CustomSelection(final int startIndex, final int displayLength, @Nonnull final List<? extends R> orderings) {
+        public CustomSelection(final int startIndex, final int displayLength, @Nonnull final ReversingComparator... orderings) {
             super(startIndex, displayLength, orderings);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
-        public Selection<R> withOrderings(@Nonnull final List<? extends R> orderings) {
-            return new CustomSelection<>(getStartIndex(), getDisplayLength(), orderings);
+        public Selection<ReversingComparator> withOrderings(@Nonnull final Collection<ReversingComparator> orderings) {
+            final List<ReversingComparator> modified = Arrays.stream(getOrderings())
+                                                             .filter(ordering -> !orderings.contains(ordering))
+                                                             .collect(toList());
+            modified.addAll(orderings);
+
+            return new CustomSelection(getStartIndex(), getDisplayLength(), modified.toArray(new ReversingComparator[modified.size()]));
         }
 
     }
@@ -150,23 +148,23 @@ public class TabularDataExpectations {
     /**
      * Custom Selection Factory.
      */
-    class CustomSelectionFactory<R extends Serializable> implements
-        SelectionFactory<R, CustomSelection<R>> {
+    class CustomSelectionFactory implements
+        SelectionFactory<ReversingComparator, CustomSelection> {
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public CustomSelection<R> createSelection(final int startIndex, final int displayLength, final R... orderings) {
-            return new CustomSelection<>(startIndex, displayLength, Arrays.asList(orderings));
+        public CustomSelection createSelection(final int startIndex, final int displayLength, final ReversingComparator... orderings) {
+            return new CustomSelection(startIndex, displayLength, orderings);
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public Class<?> getOrderingType() {
-            return Serializable.class;
+        public Class<? extends ReversingComparator> getOrderingType() {
+            return ReversingComparator.class;
         }
     }
 

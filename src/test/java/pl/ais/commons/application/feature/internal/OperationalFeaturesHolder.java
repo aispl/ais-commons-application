@@ -1,13 +1,11 @@
 package pl.ais.commons.application.feature.internal;
 
-import java.util.Map;
+import pl.ais.commons.application.feature.FeaturesHolder;
+import pl.ais.commons.application.feature.FeaturesHolderSupport;
 
 import javax.annotation.concurrent.Immutable;
-
-import pl.ais.commons.application.feature.FeaturesHolderSupport;
-import pl.ais.commons.application.feature.FeaturesHolder;
-
-import com.google.common.base.Optional;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Custom implementation of {@link FeaturesHolder}.

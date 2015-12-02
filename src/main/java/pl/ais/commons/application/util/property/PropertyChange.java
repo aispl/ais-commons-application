@@ -13,11 +13,6 @@ import java.util.Objects;
 @SuppressWarnings("PMD.MissingSerialVersionUID")
 public class PropertyChange<T> implements Serializable {
 
-    /**
-     * Identifies the original class version for which it is capable of writing streams and from which it can read.
-     *
-     * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
-     */
     private static final long serialVersionUID = 2173534255623440138L;
 
     private T finalValue;

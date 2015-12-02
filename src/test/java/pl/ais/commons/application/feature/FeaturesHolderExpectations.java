@@ -1,20 +1,18 @@
 package pl.ais.commons.application.feature;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-
-import java.util.Map;
-
 import org.junit.Test;
-
 import pl.ais.commons.application.feature.internal.DefaultFeatureA;
 import pl.ais.commons.application.feature.internal.FeatureA;
 import pl.ais.commons.application.feature.internal.FeatureB;
 import pl.ais.commons.application.feature.internal.FeatureC;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Verifies {@link FeaturesHolder} expectations.
@@ -29,8 +27,10 @@ public class FeaturesHolderExpectations {
      * @return map holding Feature A, and virtual Feature B
      */
     private static Map<Class<?>, Optional<?>> featuresMap() {
-        return ImmutableMap.<Class<?>, Optional<?>> builder().put(FeatureA.class, Optional.of(new DefaultFeatureA()))
-            .put(FeatureB.class, Optional.absent()).build();
+        final Map<Class<?>, Optional<?>> result = new LinkedHashMap<>();
+        result.put(FeatureA.class, Optional.of(new DefaultFeatureA()));
+        result.put(FeatureB.class, Optional.empty());
+        return result;
     }
 
     /**

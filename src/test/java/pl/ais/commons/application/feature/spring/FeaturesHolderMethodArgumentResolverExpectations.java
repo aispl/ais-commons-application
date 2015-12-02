@@ -1,13 +1,5 @@
 package pl.ais.commons.application.feature.spring;
 
-import static junit.framework.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.Set;
-
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
@@ -17,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.FeaturesHolderFactory;
 import pl.ais.commons.application.feature.internal.DefaultFeatureA;
@@ -27,8 +18,16 @@ import pl.ais.commons.application.feature.internal.FeatureC;
 import pl.ais.commons.application.feature.internal.OperationalFeaturesHolder;
 import pl.ais.commons.application.feature.spring.internal.ExampleController;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static junit.framework.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Verifies {@link FeaturesHolderMethodArgumentResolver} expectations.
@@ -38,6 +37,10 @@ import com.google.common.collect.ImmutableSet;
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class FeaturesHolderMethodArgumentResolverExpectations {
+
+    private final GrantedAuthority adminUser = new SimpleGrantedAuthority("AdminUser");
+
+    private final GrantedAuthority ordinaryUser = new SimpleGrantedAuthority("OrdinaryUser");
 
     /**
      * @return created principal having given set of granted authorities
@@ -52,7 +55,7 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
      */
     private static FeaturesHolder extractFeaturesHolder(final ResultActions resultActions) {
         return (FeaturesHolder) resultActions.andReturn().getModelAndView().getModelMap()
-            .get(ExampleController.FEATURES_HOLDER);
+                                             .get(ExampleController.FEATURES_HOLDER);
     }
 
     /**
@@ -62,17 +65,23 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
         context.registerSingleton("featureA", DefaultFeatureA.class);
     }
 
-    private final GrantedAuthority adminUser = new SimpleGrantedAuthority("AdminUser");
-
-    private final GrantedAuthority ordinaryUser = new SimpleGrantedAuthority("OrdinaryUser");
-
     /**
      * @return mapping between granted authority and corresponding features
      */
-    private ImmutableMap<GrantedAuthority, Set<Class<?>>> featuresMap() {
-        return ImmutableMap.<GrantedAuthority, Set<Class<?>>> builder()
-            .put(adminUser, ImmutableSet.<Class<?>> of(FeatureA.class, FeatureB.class))
-            .put(ordinaryUser, ImmutableSet.<Class<?>> of(FeatureA.class, FeatureC.class)).build();
+    private Map<GrantedAuthority, Set<Class<?>>> featuresMap() {
+        final Set<Class<?>> firstSet = new HashSet<>();
+        firstSet.add(FeatureA.class);
+        firstSet.add(FeatureB.class);
+
+        final Set<Class<?>> secondSet = new HashSet<>();
+        secondSet.add(FeatureA.class);
+        secondSet.add(FeatureC.class);
+
+        final Map<GrantedAuthority, Set<Class<?>>> result = new LinkedHashMap<>();
+        result.put(adminUser, firstSet);
+        result.put(ordinaryUser, secondSet);
+
+        return result;
     }
 
     /**
@@ -117,8 +126,8 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
             initializeApplicationContext(context);
 
             final MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ExampleController())
-                .setCustomArgumentResolvers(methodArgumentResolver(context), methodArgumentResolver(factory, context))
-                .build();
+                                                   .setCustomArgumentResolvers(methodArgumentResolver(context), methodArgumentResolver(factory, context))
+                                                   .build();
 
             // ... and authorized user, having ordinary user authority.
             final Principal principal = createPrincipal(ordinaryUser);
@@ -157,7 +166,7 @@ public class FeaturesHolderMethodArgumentResolverExpectations {
             initializeApplicationContext(context);
 
             final MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new ExampleController())
-                .setCustomArgumentResolvers(methodArgumentResolver(context)).build();
+                                                   .setCustomArgumentResolvers(methodArgumentResolver(context)).build();
 
             // ... and authorized user, having ordinary user authority.
             final Principal principal = createPrincipal(ordinaryUser);
