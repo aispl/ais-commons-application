@@ -11,6 +11,7 @@
     <rule ref="rulesets/java/clone.xml" />
     <rule ref="rulesets/java/codesize.xml" />
     <rule ref="rulesets/java/controversial.xml">
+        <exclude name="AtLeastOneConstructor" />
         <exclude name="AvoidFinalLocalVariable" />
         <exclude name="AvoidLiteralsInIfCondition" />
         <exclude name="DataflowAnomalyAnalysis" />
@@ -25,17 +26,25 @@
 
     <rule ref="rulesets/java/design.xml">
         <exclude name="FieldDeclarationsShouldBeAtStartOfClass" />
+        <exclude name="UseVarargs" />
     </rule>
 
     <rule ref="rulesets/java/empty.xml" />
     <rule ref="rulesets/java/finalizers.xml" />
     <rule ref="rulesets/java/imports.xml" />
-    <rule ref="rulesets/java/javabeans.xml" />
+    <rule ref="rulesets/java/javabeans.xml">
+        <exclude name="BeanMembersShouldSerialize" />
+    </rule>
     <rule ref="rulesets/java/j2ee.xml" />
     <rule ref="rulesets/java/junit.xml" />
     <rule ref="rulesets/java/logging-jakarta-commons.xml" />
     <rule ref="rulesets/java/logging-java.xml" />
-    <rule ref="rulesets/java/naming.xml" />
+    <rule ref="rulesets/java/naming.xml">
+        <exclude name="AbstractNaming" />
+        <exclude name="ShortClassName" />
+        <exclude name="ShortMethodName" />
+        <exclude name="ShortVariable" />
+    </rule>
     <rule ref="rulesets/java/optimizations.xml" />
     <rule ref="rulesets/java/strictexception.xml" />
     <rule ref="rulesets/java/strings.xml" />
