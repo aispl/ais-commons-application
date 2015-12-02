@@ -1,13 +1,12 @@
 package pl.ais.commons.application.feature;
 
-import java.util.Map;
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Base class to be extended by {@link FeaturesHolder} implementations.
@@ -35,7 +34,7 @@ public class FeaturesHolderSupport implements FeaturesHolder {
         }
 
         // ... and initialize this instance fields.
-        this.featuresMap = ImmutableMap.copyOf(featuresMap);
+        this.featuresMap = new LinkedHashMap<>(featuresMap);
     }
 
     /**
@@ -58,7 +57,7 @@ public class FeaturesHolderSupport implements FeaturesHolder {
     @SuppressWarnings("unchecked")
     @Override
     public <F> F getFeature(@Nonnull final Class<F> feature) throws UnsupportedFeatureException,
-    VirtualFeatureException {
+        VirtualFeatureException {
 
         // Verify method requirements, ...
         if (null == feature) {
@@ -82,7 +81,7 @@ public class FeaturesHolderSupport implements FeaturesHolder {
      * @return unmodifiable view of the features owned by the holder
      */
     protected Map<Class<?>, Optional<?>> getFeaturesMap() {
-        return featuresMap;
+        return Collections.unmodifiableMap(featuresMap);
     }
 
     /**

@@ -1,11 +1,9 @@
 package pl.ais.commons.application.feature;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Optional;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Default {@link FeaturesHolder} implementation.

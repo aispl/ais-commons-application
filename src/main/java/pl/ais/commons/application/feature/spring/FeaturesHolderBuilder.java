@@ -1,16 +1,13 @@
 package pl.ais.commons.application.feature.spring;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import org.springframework.context.ApplicationContext;
-
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.FeaturesHolderFactory;
 
-import com.google.common.base.Optional;
+import javax.annotation.Nonnull;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utility class for building instances of {@link FeaturesHolder}.
@@ -31,8 +28,8 @@ final class FeaturesHolderBuilder {
      * Constructs builder instance.
      *
      * <p>
-     *   Constructs builder instance using provided {@link FeaturesHolderFactory} as a delegate for creating
-     *   {@link FeaturesHolder} instances.
+     * Constructs builder instance using provided {@link FeaturesHolderFactory} as a delegate for creating
+     * {@link FeaturesHolder} instances.
      * </p>
      *
      * @param factory factory capable of creating {@link FeaturesHolder} instances
@@ -66,7 +63,7 @@ final class FeaturesHolderBuilder {
             if (handlersMap.isEmpty()) {
 
                 // ... if there are no such beans, the feature will be considered as virtual, ...
-                featuresMap.put(feature, Optional.absent());
+                featuresMap.put(feature, Optional.empty());
             } else {
 
                 // ... register the feature (using first bean from the map returned by Spring).

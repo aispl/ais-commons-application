@@ -1,20 +1,18 @@
 package pl.ais.commons.application.feature;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Customizable {@link FeaturesHolder} factory.
  *
  * <p>
- *   This factory is capable of creating either {@link DefaultFeaturesHolder} instances, or any other
- *   {@link FeaturesHolder} implementing class (as long as it has 1-arg constructor accepting Map of features).
+ * This factory is capable of creating either {@link DefaultFeaturesHolder} instances, or any other
+ * {@link FeaturesHolder} implementing class (as long as it has 1-arg constructor accepting Map of features).
  * </p>
  *
  * @author Warlock, AIS.PL
@@ -27,16 +25,6 @@ public final class FeaturesHolderFactory {
      * Shared instance of default {@link FeaturesHolder} factory.
      */
     private static final FeaturesHolderFactory DEFAULT_FACTORY = new FeaturesHolderFactory();
-
-    /**
-     * Returns shared instance of default {@link FeaturesHolder} factory.
-     *
-     * @return shared instance of default {@link FeaturesHolder} factory.
-     */
-    @Nonnull
-    public static FeaturesHolderFactory getInstance() {
-        return DEFAULT_FACTORY;
-    }
 
     private transient Constructor<? extends FeaturesHolder> constructor;
 
@@ -68,6 +56,16 @@ public final class FeaturesHolderFactory {
             throw new IllegalArgumentException("Desired type (" + productClass
                 + ") doesn't have 1-arg constructor with Map parameter.", exception);
         }
+    }
+
+    /**
+     * Returns shared instance of default {@link FeaturesHolder} factory.
+     *
+     * @return shared instance of default {@link FeaturesHolder} factory.
+     */
+    @Nonnull
+    public static FeaturesHolderFactory getInstance() {
+        return DEFAULT_FACTORY;
     }
 
     /**

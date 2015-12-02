@@ -1,12 +1,5 @@
 package pl.ais.commons.application.feature.spring;
 
-import java.security.Principal;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,9 +10,14 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
 import pl.ais.commons.application.feature.FeaturesHolder;
 import pl.ais.commons.application.feature.FeaturesHolderFactory;
+
+import javax.annotation.Nonnull;
+import java.security.Principal;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides possibility of resolving handler method arguments of type {@link FeaturesHolder}.

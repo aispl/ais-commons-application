@@ -50,8 +50,8 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
         this.provider = provider;
     }
 
-    protected static <R extends Serializable, S extends Selection<R>> Selection<R> createSelection(
-        final HttpServletRequest request, final SelectionFactory<R, S> selectionFactory) {
+    private static <R extends Serializable, S extends Selection<R>> Selection<R> createSelection(
+        final HttpServletRequest request, @Nonnull final SelectionFactory<R, S> selectionFactory) {
         final int startIndex = getIntParameter(request, JQueryDataTables.DISPLAY_START, 0);
         final int displayLength = getIntParameter(request, JQueryDataTables.DISPLAY_LENGTH, -1);
         return null == selectionFactory ? Selections.<R>slice(startIndex, displayLength) : Selections.slice(
@@ -73,7 +73,7 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
      * @return a Map holding all information required by jQuery DataTables for viewing the data
      */
     @SuppressWarnings("boxing")
-    protected <R extends Serializable> Map<String, Object> inResponseTo(final Selection<R> selection) {
+    private <R extends Serializable> Map<String, Object> inResponseTo(final Selection<R> selection) {
         final SearchResults<E> results = provider.provideForSelection(selection);
 
         final Map<String, Object> result = new HashMap<>();
