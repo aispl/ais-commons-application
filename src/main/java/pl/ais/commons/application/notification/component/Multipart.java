@@ -16,9 +16,9 @@ import java.util.Objects;
  * @author Warlock, AIS.PL
  * @since 1.2.1
  */
-abstract class Multipart extends TypedContent implements Iterable<NotificationComponent>, NotificationComponent {
+public abstract class Multipart extends TypedContent implements Iterable<NotificationComponent>, NotificationComponent {
 
-    private static final long serialVersionUID = -4407630121318245403L;
+    private static final long serialVersionUID = 6861741426385709625L;
 
     /**
      * Components of this multipart.
