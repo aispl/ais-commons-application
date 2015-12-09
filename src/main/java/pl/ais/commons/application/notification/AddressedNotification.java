@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
 import static pl.ais.commons.application.util.ArrayUtils.streamOf;
 
@@ -27,9 +28,10 @@ import static pl.ais.commons.application.util.ArrayUtils.streamOf;
  * @since 1.2.1
  */
 @Immutable
+@SuppressWarnings("PMD.TooManyMethods")
 public final class AddressedNotification implements Serializable {
 
-    private static final long serialVersionUID = 2589076942496872522L;
+    private static final long serialVersionUID = 6490643252030586946L;
 
     private final Notification notification;
 
@@ -67,6 +69,19 @@ public final class AddressedNotification implements Serializable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof AddressedNotification)) {
+            final AddressedNotification other = (AddressedNotification) object;
+            result = Objects.equals(notification, other.notification) && Objects.equals(recipients, other.recipients);
+        }
+        return result;
+    }
+
+    /**
      * @return notification content
      */
     public NotificationComponent getContent() {
@@ -90,6 +105,14 @@ public final class AddressedNotification implements Serializable {
         return notification.getSubject();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(notification, recipients);
+    }
+
     private void readObject(final ObjectInputStream objectStream) throws IOException, ClassNotFoundException {
 
         // Read object, ...
@@ -99,7 +122,19 @@ public final class AddressedNotification implements Serializable {
         validateState();
     }
 
-    protected void validateState() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return String.format("%s addressed to: %s", notification,
+            recipients.entrySet().stream()
+                      .map(entry -> AddressType.PRIMARY == entry.getValue() ? entry.getKey() :
+                          String.format("%s (%s)", entry.getKey(), entry.getValue()))
+                      .collect(joining(", ")));
+    }
+
+    private void validateState() {
         Objects.requireNonNull(notification, "Notification is required.");
         Objects.requireNonNull(recipients, "Recipients are required.");
     }
@@ -113,7 +148,7 @@ public final class AddressedNotification implements Serializable {
 
         private final Map<String, AddressType> recipients;
 
-        private Builder(final Notification notification) {
+        protected Builder(final Notification notification) {
             super();
 
             this.notification = notification;

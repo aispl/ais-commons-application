@@ -19,9 +19,10 @@ import java.util.function.Supplier;
  * @since 1.2.1
  */
 @Immutable
+@SuppressWarnings("PMD.TooManyMethods")
 public final class Notification implements Serializable {
 
-    private static final long serialVersionUID = 5207147563732093670L;
+    private static final long serialVersionUID = -5208154043766907740L;
 
     private final NotificationComponent content;
 
@@ -63,6 +64,19 @@ public final class Notification implements Serializable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof Notification)) {
+            final Notification other = (Notification) object;
+            result = Objects.equals(subject, other.subject) && Objects.equals(content, other.content);
+        }
+        return result;
+    }
+
+    /**
      * @return notification content
      */
     public NotificationComponent getContent() {
@@ -76,6 +90,14 @@ public final class Notification implements Serializable {
         return subject;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(subject, content);
+    }
+
     private void readObject(final ObjectInputStream objectStream) throws IOException, ClassNotFoundException {
 
         // Read object, ...
@@ -85,7 +107,15 @@ public final class Notification implements Serializable {
         validateState();
     }
 
-    protected void validateState() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return String.format("%s [%s]", subject, content);
+    }
+
+    private void validateState() {
         Objects.requireNonNull(content, "Notification content is required.");
         Objects.requireNonNull(subject, "Notification subject is required.");
     }
@@ -102,7 +132,7 @@ public final class Notification implements Serializable {
         /**
          * Constructs new instance.
          */
-        private Builder() {
+        protected Builder() {
             super();
         }
 

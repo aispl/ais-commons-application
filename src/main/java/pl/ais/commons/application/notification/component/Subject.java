@@ -18,7 +18,7 @@ public final class Subject implements Serializable {
 
     private static final String DEFAULT_CHARSET = "US-ASCII";
 
-    private static final long serialVersionUID = -5975325057894044789L;
+    private static final long serialVersionUID = 554772880997777359L;
 
     private final String charsetName;
 
@@ -65,10 +65,31 @@ public final class Subject implements Serializable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof Subject)) {
+            final Subject other = (Subject) object;
+            result = Objects.equals(charsetName, other.charsetName) && Objects.equals(value, other.value);
+        }
+        return result;
+    }
+
+    /**
      * @return name of the charset used for subject encoding
      */
     public String getCharsetName() {
         return charsetName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(charsetName, value);
     }
 
     private void readObject(final ObjectInputStream objectStream) throws IOException, ClassNotFoundException {
@@ -87,7 +108,7 @@ public final class Subject implements Serializable {
         return value;
     }
 
-    protected void validateState() {
+    private void validateState() {
         Objects.requireNonNull(value, "Subject is required.");
         Objects.requireNonNull(charsetName, "Name of the charset is required.");
     }
