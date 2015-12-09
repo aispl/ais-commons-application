@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
  * @author Warlock, AIS.PL
  * @since 1.2.1
  */
-public final class MailSender {
+public final class MailSender implements BiConsumer<AddressedNotification, TransportListener[]>{
 
     private final Session session;
 
