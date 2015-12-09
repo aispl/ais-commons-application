@@ -16,11 +16,12 @@ import java.util.Objects;
  * @since 1.2.1
  */
 @Immutable
+@SuppressWarnings("PMD.TooManyMethods")
 public final class Text extends TypedData {
 
     private static final String DEFAULT_CHARSET = "US-ASCII";
 
-    private static final long serialVersionUID = -577763928597281842L;
+    private static final long serialVersionUID = -3356280645964860691L;
 
     /**
      * Name of the charset used for encoding the content.
@@ -106,6 +107,19 @@ public final class Text extends TypedData {
      * {@inheritDoc}
      */
     @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof Text)) {
+            final Text other = (Text) object;
+            result = Objects.equals(getContentType(), other.getContentType()) && Objects.equals(content, other.content);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(content.getBytes(charsetName));
     }
@@ -118,6 +132,14 @@ public final class Text extends TypedData {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getContentType(), content);
+    }
+
     private void readObject(final ObjectInputStream objectStream) throws IOException, ClassNotFoundException {
 
         // Read object, ...
@@ -125,6 +147,14 @@ public final class Text extends TypedData {
 
         // ... and validate the state.
         validateState();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return String.format("%s [%s]", content, getContentType());
     }
 
     @Override
