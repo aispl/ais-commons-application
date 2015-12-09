@@ -54,7 +54,7 @@ public final class FreeMarkerTemplateEngine implements TemplateEngine {
         }
     }
 
-    private byte[] renderTemplate(final Template template, final Map<String, Object> model) throws IOException {
+    private byte[] renderTemplate(final Template template, final Map<String, ?> model) throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             template.process(model, new OutputStreamWriter(outputStream, configuration.getDefaultEncoding()));
@@ -69,7 +69,7 @@ public final class FreeMarkerTemplateEngine implements TemplateEngine {
      * {@inheritDoc}
      */
     @Override
-    public byte[] renderTemplate(@Nonnull final String templateName, @Nonnull final Map<String, Object> model) throws IOException {
+    public byte[] renderTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> model) throws IOException {
         final Template template = configuration.getTemplate(templateName);
         return renderTemplate(template, model);
     }

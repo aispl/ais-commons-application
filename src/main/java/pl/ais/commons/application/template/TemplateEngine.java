@@ -11,6 +11,6 @@ import java.util.Map;
  */
 public interface TemplateEngine {
 
-    byte[] renderTemplate(final String template, final Map<String, Object> model) throws IOException;
+    byte[] renderTemplate(final String template, final Map<String, ?> model) throws IOException;
 
 }
