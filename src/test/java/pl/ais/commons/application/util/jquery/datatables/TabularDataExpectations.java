@@ -43,7 +43,7 @@ public class TabularDataExpectations {
                 for (final Integer element : results.getElements()) {
                     result.add(new Object[] {element});
                 }
-                return result.toArray(new Object[0][0]);
+                return result.toArray(new Object[result.size()][1]);
             }
 
         };
