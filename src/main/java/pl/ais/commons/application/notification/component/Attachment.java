@@ -17,6 +17,8 @@ import java.util.Objects;
 @Immutable
 public final class Attachment extends TypedData {
 
+    private static final long serialVersionUID = 3953987123941732863L;
+
     /**
      * Content of the attachment.
      *
@@ -46,6 +48,7 @@ public final class Attachment extends TypedData {
      *
      * @param visitor the visitor to be accepted
      */
+    @Override
     public void accept(@Nonnull final NotificationComponentVisitor visitor) {
         visitor.visit(this);
     }
@@ -54,7 +57,7 @@ public final class Attachment extends TypedData {
      * {@inheritDoc}
      */
     @Override
-    public InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() {
         return new ByteArrayInputStream(content);
     }
 

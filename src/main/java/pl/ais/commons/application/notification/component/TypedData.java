@@ -13,9 +13,9 @@ import java.io.OutputStream;
  */
 abstract class TypedData extends TypedContent implements DataSource {
 
-    private static final long serialVersionUID = 1673609156463676795L;
+    private static final long serialVersionUID = 2646815487995040835L;
 
-    protected TypedData(@Nonnull final String contentType) {
+    TypedData(@Nonnull final String contentType) {
         super(contentType);
     }
 

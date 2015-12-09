@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 abstract class TypedContent implements NotificationComponent, Serializable {
 
-    private static final long serialVersionUID = 99708806193636507L;
+    private static final long serialVersionUID = -2511649532981437114L;
 
     /**
      * The content type.
@@ -24,7 +24,7 @@ abstract class TypedContent implements NotificationComponent, Serializable {
      */
     private final String contentType;
 
-    protected TypedContent(@Nonnull final String contentType) {
+    TypedContent(@Nonnull final String contentType) {
 
         // Validate constructor requirements, ...
         Objects.requireNonNull(contentType, "Content type is required");

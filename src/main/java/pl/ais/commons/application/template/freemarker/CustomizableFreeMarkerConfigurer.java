@@ -1,9 +1,11 @@
 package pl.ais.commons.application.template.freemarker;
 
 import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,7 +23,8 @@ public class CustomizableFreeMarkerConfigurer extends FreeMarkerConfigurer {
     private int tagSyntax = Configuration.AUTO_DETECT_TAG_SYNTAX;
 
     @Override
-    protected void postProcessConfiguration(final Configuration config) {
+    protected void postProcessConfiguration(final Configuration config) throws IOException, TemplateException {
+        super.postProcessConfiguration(config);
         autoImports.entrySet().forEach(entry -> config.addAutoImport(entry.getKey(), entry.getValue()));
         config.setTagSyntax(tagSyntax);
     }
@@ -31,7 +34,7 @@ public class CustomizableFreeMarkerConfigurer extends FreeMarkerConfigurer {
      */
     public void setAutoImports(@Nonnull final Map<String, String> autoImports) {
         Objects.requireNonNull(autoImports, "Auto-imports map is required.");
-        this.autoImports = autoImports;
+        this.autoImports = new LinkedHashMap<>(autoImports);
     }
 
     /**

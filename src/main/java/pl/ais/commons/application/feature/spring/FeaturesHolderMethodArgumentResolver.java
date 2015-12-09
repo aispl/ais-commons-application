@@ -16,6 +16,7 @@ import pl.ais.commons.application.feature.FeaturesHolderFactory;
 import javax.annotation.Nonnull;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,18 +29,18 @@ import java.util.Set;
 public final class FeaturesHolderMethodArgumentResolver implements ApplicationContextAware,
     HandlerMethodArgumentResolver {
 
-    private transient ApplicationContext context;
+    private ApplicationContext context;
 
-    private transient FeaturesHolderFactory factory;
+    private FeaturesHolderFactory factory;
 
-    private transient Map<GrantedAuthority, Set<Class<?>>> featuresMap;
+    private Map<GrantedAuthority, Set<Class<?>>> featuresMap;
 
     /**
      * Constructs new instance.
      */
     public FeaturesHolderMethodArgumentResolver() {
         super();
-        this.factory = FeaturesHolderFactory.getInstance();
+        factory = FeaturesHolderFactory.getInstance();
     }
 
     private void addFeaturesForAuthority(final GrantedAuthority authority, final FeaturesHolderBuilder builder) {
@@ -111,7 +112,7 @@ public final class FeaturesHolderMethodArgumentResolver implements ApplicationCo
         }
 
         // ... and mutate the field.
-        this.featuresMap = featuresMap;
+        this.featuresMap = new LinkedHashMap<>(featuresMap);
     }
 
     /**

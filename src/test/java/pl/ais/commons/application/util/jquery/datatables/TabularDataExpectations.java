@@ -31,46 +31,30 @@ import static junit.framework.Assert.assertEquals;
 @SuppressWarnings("static-method")
 public class TabularDataExpectations {
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private static SearchResultsConverter<Integer> createConverter() {
-        return new SearchResultsConverter<Integer>() {
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Object[][] apply(final SearchResults<Integer> results) {
-                final List<Object[]> result = new ArrayList<>();
-                for (final Integer element : results.getElements()) {
-                    result.add(new Object[] {element});
-                }
-                return result.toArray(new Object[result.size()][1]);
+        return results -> {
+            final List<Object[]> result = new ArrayList<>();
+            for (final Integer element : results.getElements()) {
+                result.add(new Object[] {element});
             }
-
+            return result.toArray(new Object[result.size()][1]);
         };
     }
 
     private static SearchResultsProvider<Integer> createSearchResultsProvider() {
-        return new SearchResultsProvider<Integer>() {
-
-            /**
-             * {@inheritDoc}
-             */
-            @SuppressWarnings("unchecked")
-            @Override
-            public SearchResults<Integer> apply(final Selection selection) {
-                final List<Integer> results = new ArrayList<>();
-                for (int i = 0; i < 100; i++) {
-                    results.add(Integer.valueOf(i));
-                }
-                for (final Object comparator : selection.getOrderings()) {
-                    Collections.sort(results, (Comparator<? super Integer>) comparator);
-                }
-
-                final int from = selection.getStartIndex();
-                return SearchResults.of(100, results.subList(from,
-                    Math.min(selection.isSelectingSubset() ? from + selection.getDisplayLength() : 100, 100)));
+        return selection -> {
+            final List<Integer> results = new ArrayList<>();
+            for (int i = 0; i < 100; i++) {
+                results.add(Integer.valueOf(i));
+            }
+            for (final Object comparator : selection.getOrderings()) {
+                Collections.sort(results, (Comparator<? super Integer>) comparator);
             }
 
+            final int from = selection.getStartIndex();
+            return SearchResults.of(100, results.subList(from,
+                Math.min(selection.isSelectingSubset() ? from + selection.getDisplayLength() : 100, 100)));
         };
     }
 

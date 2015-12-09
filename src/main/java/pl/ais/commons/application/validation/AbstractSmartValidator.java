@@ -33,8 +33,8 @@ public abstract class AbstractSmartValidator<E> implements SmartValidator {
      * {@inheritDoc}
      */
     @Override
-    public boolean supports(final Class<?> clazz) {
-        return entityClass.isAssignableFrom(clazz);
+    public boolean supports(final Class<?> aClass) {
+        return entityClass.isAssignableFrom(aClass);
     }
 
     /**

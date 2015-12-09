@@ -55,14 +55,13 @@ public final class FreeMarkerTemplateEngine implements TemplateEngine {
     }
 
     private byte[] renderTemplate(final Template template, final Map<String, ?> model) throws IOException {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
+        try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             template.process(model, new OutputStreamWriter(outputStream, configuration.getDefaultEncoding()));
+            return outputStream.toByteArray();
         } catch (final TemplateException exception) {
             throw new TemplateProcessingException("Exception caught while rendering template '" + template.getName()
                 + "'", exception);
         }
-        return outputStream.toByteArray();
     }
 
     /**

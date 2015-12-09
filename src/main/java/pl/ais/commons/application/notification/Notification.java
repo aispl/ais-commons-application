@@ -132,7 +132,7 @@ public final class Notification implements Serializable {
         /**
          * Constructs new instance.
          */
-        protected Builder() {
+        Builder() {
             super();
         }
 

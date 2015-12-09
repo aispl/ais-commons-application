@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
@@ -95,7 +96,7 @@ public final class AddressedNotification implements Serializable {
         return recipients.entrySet()
                          .stream()
                          .filter(candidate -> desiredType == candidate.getValue())
-                         .map(entry -> entry.getKey());
+                         .map(Entry::getKey);
     }
 
     /**
@@ -129,7 +130,7 @@ public final class AddressedNotification implements Serializable {
     public String toString() {
         return String.format("%s addressed to: %s", notification,
             recipients.entrySet().stream()
-                      .map(entry -> AddressType.PRIMARY == entry.getValue() ? entry.getKey() :
+                      .map(entry -> (AddressType.PRIMARY == entry.getValue()) ? entry.getKey() :
                           String.format("%s (%s)", entry.getKey(), entry.getValue()))
                       .collect(joining(", ")));
     }
@@ -148,7 +149,7 @@ public final class AddressedNotification implements Serializable {
 
         private final Map<String, AddressType> recipients;
 
-        protected Builder(final Notification notification) {
+        Builder(final Notification notification) {
             super();
 
             this.notification = notification;

@@ -2,9 +2,9 @@ package pl.ais.commons.application.notification.mail;
 
 import pl.ais.commons.application.notification.NotificationException;
 import pl.ais.commons.application.notification.component.Attachment;
-import pl.ais.commons.application.notification.component.Multipart;
 import pl.ais.commons.application.notification.component.MultipartAlternative;
 import pl.ais.commons.application.notification.component.MultipartMixed;
+import pl.ais.commons.application.notification.component.NotificationComponent;
 import pl.ais.commons.application.notification.component.NotificationComponentVisitor;
 import pl.ais.commons.application.notification.component.Text;
 
@@ -28,9 +28,9 @@ class MimePartCreator implements NotificationComponentVisitor {
         this.container = container;
     }
 
-    private void processMultipart(final String subType, final Multipart multipart) {
+    private void processMultipart(final String subType, final Iterable<NotificationComponent> multipart) {
         final MimeMultipart content = new MimeMultipart(subType);
-        final MimeMultipartCreator creator = new MimeMultipartCreator(content);
+        final NotificationComponentVisitor creator = new MimeMultipartCreator(content);
         multipart.forEach(nc -> nc.accept(creator));
         try {
             container.setContent(content);

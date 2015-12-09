@@ -99,6 +99,7 @@ public final class Text extends TypedData {
      *
      * @param visitor the visitor to be accepted
      */
+    @Override
     public void accept(@Nonnull final NotificationComponentVisitor visitor) {
         visitor.visit(this);
     }

@@ -39,7 +39,7 @@ final class FeaturesHolderBuilder {
         super();
         this.context = context;
         this.factory = factory;
-        this.featuresMap = new LinkedHashMap<>();
+        featuresMap = new LinkedHashMap<>();
     }
 
     /**

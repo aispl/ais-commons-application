@@ -16,9 +16,9 @@ import java.util.Objects;
  * @author Warlock, AIS.PL
  * @since 1.2.1
  */
-public abstract class Multipart extends TypedContent implements Iterable<NotificationComponent>, NotificationComponent {
+public abstract class Multipart extends TypedContent implements Iterable<NotificationComponent> {
 
-    private static final long serialVersionUID = 6861741426385709625L;
+    private static final long serialVersionUID = 5164583562721848184L;
 
     /**
      * Components of this multipart.
@@ -36,11 +36,11 @@ public abstract class Multipart extends TypedContent implements Iterable<Notific
      * @param second  second multipart component
      * @param rest    remaining multipart components
      */
-    protected Multipart(@Nonnull final String subType, final NotificationComponent first,
-                        final NotificationComponent second, final NotificationComponent... rest) {
+    Multipart(@Nonnull final String subType, final NotificationComponent first,
+              final NotificationComponent second, final NotificationComponent... rest) {
         super(String.format("multipart/%s", subType));
 
-        final ArrayList<NotificationComponent> parts = new ArrayList<>();
+        final List<NotificationComponent> parts = new ArrayList<>();
         parts.add(first);
         parts.add(second);
         parts.addAll(Arrays.asList(rest));
@@ -71,7 +71,9 @@ public abstract class Multipart extends TypedContent implements Iterable<Notific
         validateState();
     }
 
+    @Override
     protected void validateState() {
+        super.validateState();
         Objects.requireNonNull(components, "Multipart components are required");
     }
 

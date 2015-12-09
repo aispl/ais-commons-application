@@ -26,7 +26,7 @@ public final class FeaturesHolderFactory {
      */
     private static final FeaturesHolderFactory DEFAULT_FACTORY = new FeaturesHolderFactory();
 
-    private transient Constructor<? extends FeaturesHolder> constructor;
+    private final Constructor<? extends FeaturesHolder> constructor;
 
     /**
      * Constructs new factory creating {@link DefaultFeaturesHolder} instances.
@@ -51,8 +51,8 @@ public final class FeaturesHolderFactory {
 
         // ... and do the work.
         try {
-            this.constructor = productClass.getConstructor(Map.class);
-        } catch (NoSuchMethodException exception) {
+            constructor = productClass.getConstructor(Map.class);
+        } catch (final NoSuchMethodException exception) {
             throw new IllegalArgumentException("Desired type (" + productClass
                 + ") doesn't have 1-arg constructor with Map parameter.", exception);
         }

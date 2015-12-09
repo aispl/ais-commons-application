@@ -30,6 +30,7 @@ public final class MultipartMixed extends Multipart {
      *
      * @param visitor the visitor to be accepted
      */
+    @Override
     public void accept(@Nonnull final NotificationComponentVisitor visitor) {
         visitor.visit(this);
     }

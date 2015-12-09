@@ -34,6 +34,7 @@ public final class MailSender implements BiConsumer<AddressedNotification, Trans
         this.session = session;
     }
 
+    @Override
     public void accept(final AddressedNotification notification, final TransportListener... listeners) {
 
         final MimeMessage message = new MimeMessage(session);
@@ -46,7 +47,7 @@ public final class MailSender implements BiConsumer<AddressedNotification, Trans
             EnumSet.allOf(AddressType.class)
                    .forEach(addressType -> {
                        final List<Address> addresses = notification.getRecipients(addressType)
-                                                                   .flatMap(recipient -> parseAddress(recipient))
+                                                                   .flatMap(this::parseAddress)
                                                                    .collect(Collectors.toList());
                        try {
                            message.setRecipients(mapType(addressType), addresses.toArray(new Address[addresses.size()]));
@@ -64,7 +65,7 @@ public final class MailSender implements BiConsumer<AddressedNotification, Trans
 
             final Transport transport = session.getTransport();
             Arrays.stream(listeners)
-                  .forEachOrdered(listener -> transport.addTransportListener(listener));
+                  .forEachOrdered(transport::addTransportListener);
             try {
                 transport.connect();
                 transport.sendMessage(message, message.getAllRecipients());

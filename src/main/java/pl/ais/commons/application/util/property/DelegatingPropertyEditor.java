@@ -48,13 +48,7 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
      * @since 1.0.2
      */
     public static <T> PropertyEditorFactory factoryFor(final Formatter<T> formatter) {
-        return new PropertyEditorFactory() {
-
-            @Override
-            public PropertyEditor newPropertyEditor() {
-                return new DelegatingPropertyEditor<>(formatter);
-            }
-        };
+        return () -> new DelegatingPropertyEditor<>(formatter);
     }
 
     /**
@@ -81,7 +75,7 @@ public class DelegatingPropertyEditor<T> extends PropertyEditorSupport {
     public void setAsText(final String text) throws IllegalArgumentException {
         try {
             setValue(formatter.parse(text, LocaleContextHolder.getLocale()));
-        } catch (ParseException exception) {
+        } catch (final ParseException exception) {
             throw new IllegalArgumentException(exception);
         }
     }
