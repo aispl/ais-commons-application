@@ -22,9 +22,11 @@ import java.util.function.Supplier;
 @SuppressWarnings("PMD.TooManyMethods")
 public final class Notification implements Serializable {
 
-    private static final long serialVersionUID = -5208154043766907740L;
+    private static final long serialVersionUID = 7012801705834810129L;
 
     private final NotificationComponent content;
+
+    private final String sender;
 
     private final Subject subject;
 
@@ -37,6 +39,7 @@ public final class Notification implements Serializable {
         super();
 
         content = builder.content;
+        sender = builder.sender;
         subject = builder.subject;
     }
 
@@ -84,6 +87,13 @@ public final class Notification implements Serializable {
     }
 
     /**
+     * @return notification sender
+     */
+    public String getSender() {
+        return sender;
+    }
+
+    /**
      * @return notification subject
      */
     public Subject getSubject() {
@@ -127,6 +137,8 @@ public final class Notification implements Serializable {
 
         private NotificationComponent content;
 
+        private String sender;
+
         private Subject subject;
 
         /**
@@ -149,6 +161,11 @@ public final class Notification implements Serializable {
         @Override
         public Notification get() {
             return new Notification(this);
+        }
+
+        public Builder sentBy(final String sender) {
+            this.sender = sender;
+            return this;
         }
 
         /**

@@ -100,6 +100,13 @@ public final class AddressedNotification implements Serializable {
     }
 
     /**
+     * @return notification sender
+     */
+    public String getSender() {
+        return notification.getSender();
+    }
+
+    /**
      * @return notification subject
      */
     public Subject getSubject() {
@@ -204,9 +211,9 @@ public final class AddressedNotification implements Serializable {
         }
 
         private Builder withRecipients(final AddressType type, final String first, final String... rest) {
-            recipients.putAll(
-                streamOf(String.class, first, rest)
-                    .collect(toMap(identity(), __ -> type, throwingMerger(), LinkedHashMap::new)));
+            final Map<String, AddressType> toBeAdded = streamOf(String.class, first, rest).collect(
+                toMap(identity(), __ -> type, throwingMerger(), LinkedHashMap::new));
+            recipients.putAll(toBeAdded);
             return this;
         }
 

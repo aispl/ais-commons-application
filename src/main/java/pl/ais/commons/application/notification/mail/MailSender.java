@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * @author Warlock, AIS.PL
  * @since 1.2.1
  */
-public final class MailSender implements BiConsumer<AddressedNotification, TransportListener[]>{
+public final class MailSender implements BiConsumer<AddressedNotification, TransportListener[]> {
 
     private final Session session;
 
@@ -41,8 +41,14 @@ public final class MailSender implements BiConsumer<AddressedNotification, Trans
         try {
             message.setSentDate(new Date());
 
-            // TODO: currently we use session property 'mail.from' to initialize it
-            message.setFrom();
+            final String sender = notification.getSender();
+            if ((null == sender) || sender.isEmpty()) {
+                message.setFrom();
+            } else {
+                final InternetAddress senderAddress = new InternetAddress(sender);
+                message.setFrom(senderAddress);
+                message.setReplyTo(new Address[] {senderAddress});
+            }
 
             EnumSet.allOf(AddressType.class)
                    .forEach(addressType -> {
