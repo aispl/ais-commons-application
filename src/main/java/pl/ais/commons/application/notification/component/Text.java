@@ -91,7 +91,7 @@ public final class Text extends TypedData {
      * @return newly created {@link Text} instance holding given plain text content
      */
     public static Text text(@Nonnull final String content, @Nonnull final String charsetName) {
-        return new Text("text/html", content, charsetName);
+        return new Text("text/plain", content, charsetName);
     }
 
     /**
