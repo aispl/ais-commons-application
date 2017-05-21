@@ -155,7 +155,7 @@ public final class Text extends TypedData {
      */
     @Override
     public String toString() {
-        return String.format("%s [%s]", content, getContentType());
+        return String.format("%s: %s", getContentType(), content);
     }
 
     @Override
