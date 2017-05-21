@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Multipart.
@@ -18,7 +21,7 @@ import java.util.Objects;
  */
 public abstract class Multipart extends TypedContent implements Iterable<NotificationComponent> {
 
-    private static final long serialVersionUID = 5164583562721848184L;
+    private static final long serialVersionUID = -2045795397379622793L;
 
     /**
      * Components of this multipart.
@@ -69,6 +72,14 @@ public abstract class Multipart extends TypedContent implements Iterable<Notific
 
         // ... and validate the state.
         validateState();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: [%s]", getContentType(),
+            StreamSupport.stream(spliterator(), false)
+                         .map(NotificationComponent::toString)
+                         .collect(joining(", ")));
     }
 
     @Override

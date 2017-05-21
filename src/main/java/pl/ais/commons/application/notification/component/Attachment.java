@@ -17,7 +17,7 @@ import java.util.Objects;
 @Immutable
 public final class Attachment extends TypedData {
 
-    private static final long serialVersionUID = 3953987123941732863L;
+    private static final long serialVersionUID = -6711091748645366289L;
 
     /**
      * Content of the attachment.
@@ -79,11 +79,15 @@ public final class Attachment extends TypedData {
     }
 
     @Override
+    public String toString() {
+        return String.format("Attachment of type: %s, and size: %d", getContentType(), content.length);
+    }
+
+    @Override
     protected void validateState() {
         super.validateState();
 
         Objects.requireNonNull(name, "Attachment name is required.");
         Objects.requireNonNull(content, "Attachment content is required.");
     }
-
 }
