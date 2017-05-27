@@ -187,6 +187,15 @@ public final class Notification implements Serializable {
             return this;
         }
 
+        /**
+         * @param subject the subject
+         * @return the builder itself, for method invocation chaining
+         */
+        public Builder withSubject(final Subject subject) {
+            this.subject = subject;
+            return this;
+        }
+
     }
 
 }
