@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.joining;
  */
 public abstract class Multipart extends TypedContent implements Iterable<NotificationComponent> {
 
-    private static final long serialVersionUID = -2045795397379622793L;
+    private static final long serialVersionUID = 2270236523277925468L;
 
     /**
      * Components of this multipart.
@@ -51,10 +51,33 @@ public abstract class Multipart extends TypedContent implements Iterable<Notific
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object object) {
+        final Class<? extends Multipart> myClass = getClass();
+        boolean result = (this == object);
+        if (!result && (null != object) && (myClass == object.getClass())) {
+            final Multipart other = (Multipart) object;
+            result = Objects.equals(getContentType(), other.getContentType())
+                && Objects.equals(components, other.components);
+        }
+        return result;
+    }
+
+    /**
      * @return unmodifiable view of the multipart components
      */
     public List<NotificationComponent> getComponents() {
         return components;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getContentType(), components);
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 abstract class TypedContent implements NotificationComponent, Serializable {
 
-    private static final long serialVersionUID = -2511649532981437114L;
+    private static final long serialVersionUID = 7059300599040576656L;
 
     /**
      * The content type.
@@ -34,10 +34,31 @@ abstract class TypedContent implements NotificationComponent, Serializable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof TypedContent)) {
+            final TypedContent other = (TypedContent) object;
+            result = Objects.equals(contentType, other.contentType);
+        }
+        return result;
+    }
+
+    /**
      * @return the content type
      */
     public String getContentType() {
         return contentType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(contentType);
     }
 
     private void readObject(final ObjectInputStream objectStream) throws IOException, ClassNotFoundException {
