@@ -1,7 +1,6 @@
 package pl.ais.commons.application.validation;
 
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.validation.Errors;
 import org.springframework.validation.SmartValidator;
@@ -10,9 +9,10 @@ import org.springframework.validation.Validator;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 /**
  * Verifies {@link AbstractSmartValidator} expectations.
@@ -40,7 +40,7 @@ public class AbstractSmartValidatorExpectations {
         validator.validate(entity, errors);
 
         // ... then instance should be accepted by the validator.
-        Mockito.verify(errors, Mockito.never()).reject(anyString(), Matchers.any(Object[].class), anyString());
+        Mockito.verify(errors, Mockito.never()).reject(anyString(), any(Object[].class), anyString());
     }
 
     /**
@@ -58,7 +58,7 @@ public class AbstractSmartValidatorExpectations {
         validator.validate(entity, errors, OptionalHint.class);
 
         // ... then instance should be accepted by the validator.
-        Mockito.verify(errors, Mockito.never()).reject(anyString(), Matchers.any(Object[].class), anyString());
+        Mockito.verify(errors, Mockito.never()).reject(anyString(), any(Object[].class), anyString());
     }
 
     /**
@@ -77,7 +77,7 @@ public class AbstractSmartValidatorExpectations {
         validator.validate(entity, errors);
 
         // ... then instance should be rejected by the validator.
-        Mockito.verify(errors, Mockito.atLeastOnce()).reject(anyString(), Matchers.any(Object[].class), anyString());
+        Mockito.verify(errors, Mockito.atLeastOnce()).reject(anyString(), any(Object[].class), anyString());
     }
 
     /**

@@ -50,10 +50,10 @@ public final class SearchResultsAdapter<E extends Serializable> implements Tabul
     }
 
     private static <R extends Serializable, S extends Selection<R>> Selection<R> createSelection(
-        final HttpServletRequest request, @Nonnull final SelectionFactory<R, S> selectionFactory) {
+        final HttpServletRequest request, final SelectionFactory<R, S> selectionFactory) {
         final int startIndex = getIntParameter(request, JQueryDataTables.DISPLAY_START, 0);
         final int displayLength = getIntParameter(request, JQueryDataTables.DISPLAY_LENGTH, -1);
-        return null == selectionFactory ? Selections.<R>slice(startIndex, displayLength) : Selections.slice(
+        return null == selectionFactory ? Selections.slice(startIndex, displayLength) : Selections.slice(
             startIndex, displayLength, selectionFactory);
     }
 
