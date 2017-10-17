@@ -15,6 +15,7 @@
         <exclude name="AvoidFinalLocalVariable" />
         <exclude name="AvoidLiteralsInIfCondition" />
         <exclude name="DataflowAnomalyAnalysis" />
+        <exclude name="DefaultPackage" />
         <exclude name="UnnecessaryConstructor" />
         <exclude name="UseConcurrentHashMap" />
     </rule>

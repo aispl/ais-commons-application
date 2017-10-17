@@ -18,6 +18,7 @@ import static org.springframework.http.HttpStatus.*;
  * @since 1.3.2
  */
 @Immutable
+@SuppressWarnings("PMD.TooManyMethods")
 public final class ResponseEntities {
 
     private ResponseEntities() {

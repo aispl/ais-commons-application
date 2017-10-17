@@ -16,6 +16,7 @@ import static pl.ais.commons.application.util.http.ResponseEntities.textHtml;
  * @author Warlock, AIS.PL
  * @since 1.3.2
  */
+@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
 public class ResponseEntitiesExpectations {
 
     @Test
@@ -31,19 +32,23 @@ public class ResponseEntitiesExpectations {
         final Optional<ResponseEntity<?>> optionalResponse = ResponseEntities.allErrors(bindingResult);
 
         // Then it will have 'Bad Request' status, and provide all errors as response body.
-        assertTrue(optionalResponse.isPresent());
+        assertTrue("Response should be present", optionalResponse.isPresent());
 
         final ResponseEntity<?> response = optionalResponse.get();
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(bindingResult.getAllErrors(), response.getBody());
+        assertEquals("Response status code should be 'Bad Request' (400)",
+            HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Response body should enclose all validation errors",
+            bindingResult.getAllErrors(), response.getBody());
     }
 
     @Test
     public void shouldReturnEmptyResponseWithTextHtmlContentTypeForOkMethod() {
         final ResponseEntity<?> response = ResponseEntities.ok();
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(textHtml(), response.getHeaders().getContentType());
+        assertEquals("Response status code should be 'OK' (200)",
+            HttpStatus.OK, response.getStatusCode());
+        assertEquals("Response content type should be 'text/html', with charset UTF-8",
+            textHtml(), response.getHeaders().getContentType());
     }
 
     @Test
@@ -56,8 +61,9 @@ public class ResponseEntitiesExpectations {
         final ResponseEntity<Long> response = ResponseEntities.created(entityId);
 
         // Then it will provide a response entity with 'Created' status and given value as response body.
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(entityId, response.getBody());
+        assertEquals("Response status code should be 'Created' (201)",
+            HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("Response body should enclose entity ID", entityId, response.getBody());
     }
 
     private static class MrBean {
