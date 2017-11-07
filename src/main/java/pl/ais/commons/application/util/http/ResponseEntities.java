@@ -4,11 +4,14 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import javax.annotation.concurrent.Immutable;
 import java.nio.charset.Charset;
 import java.util.Optional;
+import java.util.function.Function;
 
+import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.*;
 
 /**
@@ -33,6 +36,21 @@ public final class ResponseEntities {
     public static Optional<ResponseEntity<?>> allErrors(final BindingResult bindingResult) {
         return bindingResult.hasErrors() ?
             Optional.of(badRequest(bindingResult.getAllErrors())) : Optional.empty();
+    }
+
+    /**
+     * @param bindingResult binding result to be processed
+     * @param mapper        error mapping function
+     * @return an {@code Optional} holding 'Bad Request' (400) response entity enclosing all validation errors,
+     * or {@link Optional#empty()} if provided {@code bindingResult} has no validation errors
+     */
+    public static Optional<ResponseEntity<?>> allErrors(final BindingResult bindingResult,
+                                                        final Function<ObjectError, ?> mapper) {
+        return bindingResult.hasErrors() ?
+            Optional.of(badRequest(bindingResult.getAllErrors()
+                                                .stream()
+                                                .map(mapper)
+                                                .collect(toList()))) : Optional.empty();
     }
 
     /**
