@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.lang.reflect.ParameterizedType;
-import java.util.Objects;
 
 /**
  * Class to be extended by smart validators.
@@ -43,14 +42,7 @@ public abstract class AbstractSmartValidator<E> implements SmartValidator {
     @SuppressWarnings("unchecked")
     @Override
     public final void validate(@Nullable final Object target, @Nonnull final Errors errors) {
-
-        // Validate method requirements, ...
-        Objects.requireNonNull(errors, "Errors are required.");
-
-        // ... and if there is anything to do, delegate the work to validateEntity method.
-        if (null != target) {
-            validateEntity((E) target, errors);
-        }
+        validateEntity((E) target, errors);
     }
 
     /**
@@ -60,15 +52,7 @@ public abstract class AbstractSmartValidator<E> implements SmartValidator {
     @Override
     public final void validate(@Nullable final Object target, @Nonnull final Errors errors,
                                @Nonnull final Object... validationHints) {
-
-        // Validate method requirements, ...
-        Objects.requireNonNull(errors, "Errors are required.");
-        Objects.requireNonNull(validationHints, "Validation hints cannot be null.");
-
-        // ... and if there is anything to do, delegate the work to validateEntity method.
-        if (null != target) {
-            validateEntity((E) target, errors, validationHints);
-        }
+        validateEntity((E) target, errors, validationHints);
     }
 
     /**
