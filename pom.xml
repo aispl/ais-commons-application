@@ -40,7 +40,7 @@
     </developers>
 
     <properties>
-        <spring.version>5.2.3.RELEASE</spring.version>
+        <spring.version>5.2.4.RELEASE</spring.version>
         <spring.security.version>4.2.9.RELEASE</spring.security.version>
     </properties>
 
