@@ -1,6 +1,6 @@
 package pl.ais.commons.application.notification.component;
 
-import javax.activation.DataSource;
+import jakarta.activation.DataSource;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;

@@ -9,7 +9,7 @@ import pl.ais.commons.query.Selection;
 import pl.ais.commons.query.SelectionFactory;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -7,7 +7,7 @@ import pl.ais.commons.query.Selections;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;

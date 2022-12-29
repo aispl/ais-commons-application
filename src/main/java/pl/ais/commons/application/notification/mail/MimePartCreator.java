@@ -8,12 +8,12 @@ import pl.ais.commons.application.notification.component.NotificationComponent;
 import pl.ais.commons.application.notification.component.NotificationComponentVisitor;
 import pl.ais.commons.application.notification.component.Text;
 
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimePart;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.internet.MimePart;
 
 /**
  * @author Warlock, AIS.PL

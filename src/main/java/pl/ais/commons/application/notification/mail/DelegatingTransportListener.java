@@ -2,11 +2,11 @@ package pl.ais.commons.application.notification.mail;
 
 import pl.ais.commons.application.notification.NotificationException;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.event.TransportEvent;
-import javax.mail.event.TransportListener;
+import jakarta.mail.Address;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.event.TransportEvent;
+import jakarta.mail.event.TransportListener;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;

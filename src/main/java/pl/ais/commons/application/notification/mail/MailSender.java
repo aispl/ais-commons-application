@@ -1,8 +1,8 @@
 package pl.ais.commons.application.notification.mail;
 
+import jakarta.mail.event.TransportListener;
 import pl.ais.commons.application.notification.AddressedNotification;
 
-import javax.mail.event.TransportListener;
 import java.util.function.BiConsumer;
 
 /**
